@@ -20,19 +20,19 @@ public class UserHelper extends SQLiteOpenHelper {
     public static final String COLUMN_FNAME = "firstName";
     public static final String COLUMN_LNAME = "lastName";
     public static final String COLUMN_PASSWORD = "password";
-    public static final String COLUMN_MAIL = "mail";
+    public static final String COLUMN_TYPE = "userType";
 
     public static final String GROUP_ID = "groupId";
     public static final String USER_TO_GROUP_TABLE = "userToGroup";
     public static final String CREATE_TABLE_USER_TO_GROUP = "CREATE TABLE IF NOT EXISTS " + USER_TO_GROUP_TABLE +
-            " (" + GROUP_ID + " VARCHAR, " + COLUMN_ID + " VARCHAR, " +  USER_TO_GROUP_TABLE + " REAL)";
+            " (" + GROUP_ID + " VARCHAR, " + COLUMN_ID + " VARCHAR, "  +  USER_TO_GROUP_TABLE + " REAL)";
 
     public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + USER_TABLE +
             " (" + COLUMN_ID + " INTEGER PRIMARY KEY, " + COLUMN_FNAME + " VARCHAR, " +
-            COLUMN_LNAME + " VARCHAR, " + COLUMN_PASSWORD + " VARCHAR, " + COLUMN_MAIL + " VARCHAR, "
+            COLUMN_LNAME + " VARCHAR, " + COLUMN_PASSWORD + " VARCHAR, " + COLUMN_TYPE + " VARCHAR, "
             + USER_TABLE + " REAL)";
 
-    String[] allColumns ={COLUMN_ID,COLUMN_FNAME,COLUMN_LNAME,COLUMN_PASSWORD,COLUMN_MAIL};
+    String[] allColumns ={COLUMN_ID,COLUMN_FNAME,COLUMN_LNAME,COLUMN_PASSWORD,COLUMN_TYPE};
     SQLiteDatabase database;
 
     public UserHelper(@Nullable Context context) {
@@ -65,11 +65,16 @@ public class UserHelper extends SQLiteOpenHelper {
         Log.e("database","Inserting new user.");
         ContentValues values = new ContentValues();
 
+        String type = "student";
+        if(user instanceof UserShinshin)
+            type = "shinshin";
+        else if(user instanceof UserEducator)
+            type = "educator";
         values.put(COLUMN_ID, user.getId());
         values.put(COLUMN_FNAME, user.getFirstName());
         values.put(COLUMN_LNAME, user.getLastName());
         values.put(COLUMN_PASSWORD, user.getPassword());
-        values.put(COLUMN_MAIL,user.getMail());
+        values.put(COLUMN_TYPE,type);
 
         database.insert(USER_TABLE,null,values);
         insertUserToGroup(user);
@@ -88,10 +93,17 @@ public class UserHelper extends SQLiteOpenHelper {
                 String fname = cursor.getString(cursor.getColumnIndex(COLUMN_FNAME));
                 String lname = cursor.getString(cursor.getColumnIndex(COLUMN_LNAME));
                 String password = cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD));
-                String mail = cursor.getString(cursor.getColumnIndex(COLUMN_MAIL));
-                users.add(new User(fname,lname,id,password,mail,null));
+                String type = cursor.getString(cursor.getColumnIndex(COLUMN_TYPE));
+
+                if(type.equals("student"))
+                    users.add(new UserStudent(fname, lname, id, password, getUserGroup(id)));
+                else if (type.equals("educator"))
+                    users.add(new UserEducator(fname, lname, id, password, getUserGroup(id)));
+                else
+                    users.add(new UserShinshin(fname, lname, id, password, getUserGroup(id)));
             }
         }
+
         return users;
     }
 
@@ -120,12 +132,18 @@ public class UserHelper extends SQLiteOpenHelper {
          return allUsersToGroups;
     }
 
-    public User getUserStudent(int id){
-        User user;
-        String select_query = "SELECT * FROM " + USER_TABLE + "INNER JOIN " + USER_TO_GROUP_TABLE +
-                " ON " +USER_TABLE + ".userId" + " = " + USER_TO_GROUP_TABLE + ".userId" + " AND " + USER_TABLE + ".userId" + " = " + id;
+    public ArrayList<String> getUserGroup(long id){
+        ArrayList<String> groups = new ArrayList<>();
+        String query = "SELECT * FROM " + USER_TO_GROUP_TABLE;
+        Cursor cursor = database.rawQuery(query,null);
+        if(cursor.getCount()>0){
+            while (cursor.moveToNext()){
+                if(id == cursor.getLong(cursor.getColumnIndex(COLUMN_ID))){
+                    groups.add(cursor.getString(cursor.getColumnIndex(GROUP_ID)));
+                }
 
-        Cursor cursor = database.rawQuery(select_query,null);
-        return null;
+            }
+        }
+        return groups;
     }
 }

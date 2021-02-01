@@ -64,16 +64,7 @@
         android:background="@drawable/edit_text_background"
         android:singleLine="true"
         android:paddingRight="10dp" />
-    <EditText
-        android:id="@+id/mail"
-        android:paddingRight="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="15dp"
-        android:hint="דוא'ל"
-        android:background="@drawable/edit_text_background"
-        android:inputType="textEmailAddress"
-        android:singleLine="true" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -90,7 +81,7 @@
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="right"
         android:layout_gravity="center"
         android:background="@drawable/edit_text_background"
         android:id="@+id/userTypeSpinner"/>
@@ -155,8 +146,8 @@
         android:textColor="@color/white"
         android:layout_marginTop="30dp"
         android:text="הוספת משתמש"
+        android:id="@+id/addUser"
         android:background="@drawable/button_cyan"
-        android:layout_marginBottom="60dp"
-        android:onClick="addUser"/>
+        android:layout_marginBottom="60dp" />
 </LinearLayout>
 </ScrollView>

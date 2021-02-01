@@ -1,43 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layoutDirection="rtl">
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/homePage"
             android:icon="@drawable/ic_home_black_24dp"
-            android:title="@string/home_page" />
+            android:iconTint="@color/primaryColorGreen"
+            android:title="@string/home_page"
+            app:showAsAction="never" />
         <item
             android:id="@+id/schedulePage"
             android:icon="@drawable/ic_schedule_black_24dp"
-            android:title="@string/schedule_page" />
+            android:iconTint="@color/blue"
+            android:title="@string/schedule_page"
+            app:showAsAction="never" />
         <item
             android:id="@+id/contentPage"
             android:icon="@drawable/instagram"
-            android:title="@string/content_page" />
+            android:iconTint="@color/orange"
+            android:title="@string/content_page"
+            app:showAsAction="never" />
         <item
             android:id="@+id/ideaBox"
             android:icon="@drawable/ic_move_to_inbox_black_24dp"
-            android:title="@string/idea_box" />
+            android:iconTint="@color/turkiz"
+            android:title="@string/idea_box"
+            app:showAsAction="never" />
         <item
             android:id="@+id/requestsPage"
             android:icon="@drawable/ic_assignment_black_24dp"
-            android:title="@string/requests_page" />
+            android:iconTint="@color/yellow"
+            android:title="@string/requests_page"
+            app:showAsAction="never" />
     </group>
-    <item android:title="עוד">
+    <item
+        android:title="עוד"
+        app:showAsAction="never">
         <menu>
-            <item
-                android:id="@+id/reportBugPage"
-                android:icon="@drawable/ic_bug_report_black_24dp"
-                android:title="@string/report_bug" />
-            <item
-                android:id="@+id/settings"
-                android:icon="@drawable/ic_settings_black_24dp"
-                android:title="@string/settings" />
-            <item
-                android:id="@+id/adminPage"
-                android:icon="@drawable/ic_person_black_24dp"
-                android:title="@string/admin_page" />
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/reportBugPage"
+                    android:icon="@drawable/ic_bug_report_black_24dp"
+                    android:iconTint="@color/red"
+                    android:title="@string/report_bug"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/settings"
+                    android:icon="@drawable/ic_settings_black_24dp"
+                    android:iconTint="@color/grey"
+                    android:title="@string/settings"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/adminPage"
+                    android:icon="@drawable/ic_person_black_24dp"
+                    android:iconTint="@color/black"
+                    android:title="@string/admin_page"
+                    app:showAsAction="never" />
+            </group>
         </menu>
     </item>
 

@@ -7,8 +7,8 @@ public class UserStudent extends User{
 
     private boolean editContent;
 
-    public UserStudent(String firstName, String lastName, long id, String password, String mail, ArrayList<String> group) {
-        super(firstName, lastName, id, password, mail, group);
+    public UserStudent(String firstName, String lastName, long id, String password, ArrayList<String> group) {
+        super(firstName, lastName, id, password, group);
         editContent = false;
     }
 

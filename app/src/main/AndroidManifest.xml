@@ -16,14 +16,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".AddUserActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".AdminPage"
-            android:screenOrientation="portrait">
-
-        </activity>
     </application>
 
 </manifest>

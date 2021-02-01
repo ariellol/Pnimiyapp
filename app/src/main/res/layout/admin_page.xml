@@ -21,24 +21,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/addUserBtn"
-                android:layout_width="100dp"
+                    android:layout_width="120dp"
                 android:layout_height="70dp"
                 android:layout_marginTop="8dp"
-                android:onClick="openAddUser"
                 android:text="הוספת משתמש"
+                android:background="@drawable/rect_btn_cyan"
                 android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/changeUserBtn"
-                android:layout_width="100dp"
+                android:layout_width="120dp"
                 android:layout_height="70dp"
                 android:layout_marginRight="20dp"
                 android:text="שינוי הגדרות משתמש"
-                android:onClick="changeUserSettings"
+                android:background="@drawable/rect_darkblue_btn"
                 android:textColor="@color/white" />
         </LinearLayout>
 
@@ -46,22 +47,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/addAttendanceBtn"
-                android:layout_width="100dp"
+                android:layout_width="120dp"
                 android:layout_height="70dp"
                 android:text="הוספת טופס נוכחות"
-                android:textColor="@color/white" />
+                android:layout_marginTop="8dp"
+
+                android:background="@drawable/rect_darkblue_btn"
+                android:textColor="@color/white"/>
 
             <Button
                 android:id="@+id/AttendanceHistoryBtn"
-                android:layout_width="100dp"
+                android:layout_width="120dp"
                 android:layout_height="70dp"
                 android:layout_marginRight="20dp"
                 android:text="היסטוריית טפסי נוכחות"
+                android:background="@drawable/rect_purple_btn"
                 android:textColor="@color/white" />
         </LinearLayout>
 
@@ -78,53 +82,52 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:orientation="vertical">
 
             <TableLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/white">
 
-                <TableRow android:background="@color/black">
+                <TableRow android:background="@color/primaryColorGreen">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="15dp"
-                        android:text="סוג בקשה:"
+                        android:text="סוג בקשה"
+                        android:gravity="center"
                         android:textColor="@color/white" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="1dp"
-                        android:paddingLeft="15dp"
-                        android:text="כותרת הבקשה:"
-                        android:textColor="@color/white" />
+                    <LinearLayout android:layout_width="1dp" android:layout_height="20dp"
+                        android:background="@color/white"/>
+
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="140dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="1dp"
-                        android:paddingLeft="15dp"
-                        android:text="שם החניך:"
+                        android:gravity="center"
+                        android:text="החניך"
                         android:textColor="@color/white" />
 
+                    <LinearLayout android:layout_width="1dp" android:layout_height="20dp"
+                        android:background="@color/white"/>
+
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="120dp"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="15dp"
-                        android:text="בתאריך:"
+                        android:gravity="center"
+                        android:text="תאריך"
                         android:textColor="@color/white" />
                 </TableRow>
             </TableLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="30dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
@@ -136,27 +139,32 @@
                 android:textColor="@color/black" />
 
             <EditText
-                android:layout_width="180dp"
-                android:layout_height="40dp"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
                 android:layout_marginVertical="15dp"
+                android:id="@+id/notification_title"
+                android:background="@drawable/edit_text_background"
                 android:hint="כותרת התראה..."
                 android:singleLine="true" />
 
             <EditText
-                android:layout_width="180dp"
-                android:layout_height="70dp"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
                 android:hint="תוכן התראה..."
                 android:inputType="textMultiLine"
                 android:overScrollMode="always"
                 android:scrollbarStyle="insideInset"
+                android:id="@+id/notification_content"
+                android:background="@drawable/edit_text_background"
                 android:scrollbars="vertical"
                 android:singleLine="false" />
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_width="270dp"
+                android:layout_height="50dp"
                 android:text="שלח התראה"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/button_green"
                 android:textColor="@color/white" />
 
         </LinearLayout>
