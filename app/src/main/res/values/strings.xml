@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">פנימיאפ</string>
+    
+    <string name="home_page">דף הבית</string>
+    <string name="schedule_page">לוחות זמנים</string>
+    <string name="content_page">פנימיסטגרם</string>
+    <string name="idea_box">תיבת הצעות ורעיונות</string>
+    <string name="requests_page">בקשות יציאה והלוואה</string>
+    <string name="report_bug">דיווח על באגים ותקלות</string>
+    <string name="settings">הגדרות</string>
+    <string name="admin_page">דף הצוות</string>
+    
+    <string-array name="userTypes">
+        <item>סוג משתמש*</item>
+        <item>חניך</item>
+        <item>שינשין</item>
+        <item>מדריך</item>
+    </string-array>
+    
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+</resources>

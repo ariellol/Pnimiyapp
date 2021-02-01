@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent" android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:textDirection="rtl"
+    android:layoutDirection="rtl"
+    android:gravity="center_horizontal"
+    tools:context=".AddUserActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/fnameRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:hint="שם פרטי*"
+        android:paddingRight="10dp"
+        android:background="@drawable/edit_text_background"
+        android:singleLine="true" />
+
+    <EditText
+        android:id="@+id/lnameRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="10dp"
+        android:layout_marginVertical="15dp"
+        android:hint="שם משפחה*"
+        android:background="@drawable/edit_text_background"
+        android:singleLine="true" />
+
+    <EditText
+        android:id="@+id/idRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="תעודת זהות*"
+        android:paddingRight="10dp"
+        android:inputType="number"
+        android:background="@drawable/edit_text_background"
+        android:singleLine="true" />
+
+    <EditText
+        android:id="@+id/passwordRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="15dp"
+        android:hint="סיסמה*"
+        android:paddingRight="10dp"
+        android:background="@drawable/edit_text_background"
+        android:singleLine="true" />
+
+    <EditText
+        android:id="@+id/rePasswordRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="חזור על סיסמה*"
+        android:background="@drawable/edit_text_background"
+        android:singleLine="true"
+        android:paddingRight="10dp" />
+    <EditText
+        android:id="@+id/mail"
+        android:paddingRight="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="15dp"
+        android:hint="דוא'ל"
+        android:background="@drawable/edit_text_background"
+        android:inputType="textEmailAddress"
+        android:singleLine="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@color/black"
+        android:layout_marginTop="30dp"
+        android:layout_height="1dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:background="@drawable/edit_text_background"
+        android:id="@+id/userTypeSpinner"/>
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="5dp"
+        android:layout_height="wrap_content">
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ז"
+            android:text="שכבה ז"/>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ח"
+        android:layout_marginRight="10dp"
+        android:text="שכבה ח'"/>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="3dp"
+        android:id="@+id/ט"
+        android:text="שכבה ט'"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/י"
+            android:text="שכבה י'"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:paddingLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/יא"
+            android:text="שכבה יא'"/>
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/יב"
+            android:text="שכבה יב'"/>
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/noGrade"
+            android:text="ללא שכבה"/>
+    </LinearLayout>
+    </LinearLayout>
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:textColor="@color/white"
+        android:layout_marginTop="30dp"
+        android:text="הוספת משתמש"
+        android:background="@drawable/button_cyan"
+        android:layout_marginBottom="60dp"
+        android:onClick="addUser"/>
+</LinearLayout>
+</ScrollView>
