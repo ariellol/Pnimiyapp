@@ -1,14 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layoutDirection="rtl">
+<ScrollView xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:textDirection="rtl"
+        android:layoutDirection="rtl"
+        android:gravity="center_horizontal"
+        tools:context=".AddUserActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
-        android:id="@+id/changeSettingsTitle"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:textSize="18sp"
+            android:id="@+id/changeSettingsTitle"
+            android:textColor="@color/black"
+            android:text="שינוי הגדרות"/>
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/fnameSettnings"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:hint="שם פרטי*"
+                android:paddingRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/edit_text_background"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/lnameSettings"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dp"
+                android:hint="שם משפחה*"
+                android:background="@drawable/edit_text_background"
+                android:singleLine="true" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/passwordSettings"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:hint="סיסמה*"
+                android:layout_marginLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/edit_text_background"
+                android:singleLine="true" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="350dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical"
+            android:layout_height="75dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:text="שכבה ז"
+                    android:id="@+id/ז"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="wrap_content"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:text="שכבה ח"
+                    android:id="@+id/ח"
+                    android:layout_toLeftOf="@+id/ז"
+                    android:layout_height="wrap_content"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:text="שכבה ט"
+                    android:id="@+id/ט"
+                    android:layout_toLeftOf="@+id/ח"
+                    android:layout_height="wrap_content"/>
+                <RadioButton
+                        android:layout_width="wrap_content"
+                        android:text="שכבה י"
+                        android:id="@+id/י"
+                    android:layout_alignParentBottom="true"
+                        android:layout_height="wrap_content"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:text="שכבה יא"
+                        android:id="@+id/יא"
+                        android:layout_toLeftOf="@+id/י"
+                        android:layout_alignParentBottom="true"
+                        android:layout_height="wrap_content"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:text="שכבה יב"
+                        android:id="@+id/יב"
+                        android:layout_toLeftOf="@+id/יא"
+                        android:layout_alignParentBottom="true"
+                        android:layout_height="wrap_content"/>
+</RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/black"
+            android:layout_marginTop="30dp"
+            android:layout_height="1dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"
+            android:textSize="18sp"
+            android:id="@+id/changePermissionTitle"
+            android:text="שינוי הרשאות"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/editContent"
+                    android:text="יצירת פוסטים"/>
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editSchedule"
+                    android:padding="5dp"
+                    android:text="עריכת לוחות זמנים"/>
+            </LinearLayout>
+
+        <TextView
+            android:id="@+id/deleteUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="56dp"
+            android:text="מחק משתמש"
+            android:textColor="@color/red" />
+            <Button
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:textColor="@color/white"
+            android:layout_marginTop="30dp"
+            android:text="עדכון משתמש"
+            android:id="@+id/updateUser"
+            android:background="@drawable/button_cyan"
+            android:layout_marginBottom="60dp" />
+    </LinearLayout>
+</ScrollView>

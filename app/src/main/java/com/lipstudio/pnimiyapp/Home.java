@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -22,6 +23,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener , View.OnFocusChangeListener{
@@ -50,6 +56,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.homePage);
         }
+        AttendanceSheet attendanceSheet = new AttendanceSheet("ארוחת צהריים");
+        Log.e("currentDate",attendanceSheet.toString());
     }
 
     @Override
@@ -106,7 +114,5 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         else
             v.setBackgroundResource(R.drawable.edit_text_background);
     }
-
-
 
 }

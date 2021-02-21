@@ -29,6 +29,8 @@ public class AdminPageFragment extends Fragment implements View.OnClickListener,
         view.findViewById(R.id.changeUserBtn).setOnClickListener(this);
         Button addUserBtn = view.findViewById(R.id.addUserBtn);
         addUserBtn.setOnClickListener(this);
+        Button addAttendanceSheet = view.findViewById(R.id.addAttendanceBtn);
+        addAttendanceSheet.setOnClickListener(this);
         return view;
     }
 
@@ -42,6 +44,10 @@ public class AdminPageFragment extends Fragment implements View.OnClickListener,
                 break;
             case R.id.changeUserBtn:
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListChangeUser())
+                        .addToBackStack(null).commit();
+                break;
+            case R.id.addAttendanceBtn:
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AttendanceFragment())
                         .addToBackStack(null).commit();
         }
     }
