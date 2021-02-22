@@ -5,10 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.FontsContract;
+
 import android.util.Log;
 import androidx.annotation.Nullable;
 import java.util.ArrayList;
+
+import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.CREATE_ATTENDANCE_TABLE;
+import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.CREATE_SHEET_TABLE;
 
 public class UserHelper extends SQLiteOpenHelper {
 
@@ -26,6 +29,7 @@ public class UserHelper extends SQLiteOpenHelper {
 
     public static final String GROUP_ID = "groupId";
     public static final String USER_TO_GROUP_TABLE = "userToGroup";
+
     public static final String CREATE_TABLE_USER_TO_GROUP = "CREATE TABLE IF NOT EXISTS " + USER_TO_GROUP_TABLE +
             " (" + GROUP_ID + " VARCHAR, " + COLUMN_ID + " VARCHAR, " + USER_TO_GROUP_TABLE + " REAL)";
 
@@ -33,6 +37,8 @@ public class UserHelper extends SQLiteOpenHelper {
             " (" + COLUMN_ID + " INTEGER PRIMARY KEY, " + COLUMN_FNAME + " VARCHAR, " +
             COLUMN_LNAME + " VARCHAR, " + COLUMN_PASSWORD + " VARCHAR, " + COLUMN_TYPE + " VARCHAR, "
              + COLUMN_EDIT_CONTENT + " INTEGER, " + COLUMN_EDIT_SCHEDULE + " INTEGER, " + USER_TABLE + " REAL)";
+
+
 
     String[] allColumns ={COLUMN_ID,COLUMN_FNAME,COLUMN_LNAME,COLUMN_PASSWORD,COLUMN_TYPE};
     SQLiteDatabase database;
@@ -47,6 +53,8 @@ public class UserHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE);
         db.execSQL(CREATE_TABLE_USER_TO_GROUP);
+        db.execSQL(CREATE_SHEET_TABLE);
+        db.execSQL(CREATE_ATTENDANCE_TABLE);
         Log.e("database"," users table Created.");
     }
 
@@ -121,7 +129,6 @@ public class UserHelper extends SQLiteOpenHelper {
                     users.add(new UserShinshin(fname, lname, id, password, getUserGroup(id)));
             }
         }
-
         return users;
     }
 

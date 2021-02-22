@@ -11,18 +11,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
 
 
-public class AttendanceFragment extends Fragment implements View.OnClickListener, View.OnFocusChangeListener {
+public class AttendanceFragment extends Fragment implements View.OnClickListener, View.OnFocusChangeListener, CompoundButton.OnCheckedChangeListener {
 
     ArrayList<User> users;
     ArrayList<UserStudent> students;
@@ -40,7 +45,10 @@ public class AttendanceFragment extends Fragment implements View.OnClickListener
     TextView day;
     TextView hour;
     EditText search;
-    Button addAttendanceSheet;
+    FloatingActionButton addAttendanceSheet;
+    ArrayList<Attendance> attendances;
+    AttendanceSheet attendanceSheet;
+    AttendanceSheetHelper sheetHelper;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,6 +63,7 @@ public class AttendanceFragment extends Fragment implements View.OnClickListener
         date = view.findViewById(R.id.date);
         day = view.findViewById(R.id.day);
         hour = view.findViewById(R.id.hour);
+        attendances = new ArrayList<>();
         addAttendanceSheet = view.findViewById(R.id.createAttendance);
         addAttendanceSheet.setOnClickListener(this);
 
@@ -91,8 +100,8 @@ public class AttendanceFragment extends Fragment implements View.OnClickListener
         tab6.setLayoutParams(tabsParams);
         orderUsers();
 
-        AttendanceSheet attendanceSheet = new AttendanceSheet();
-        ArrayList<Attendance> attendances = new ArrayList<>();
+        attendanceSheet = new AttendanceSheet();
+        sheetHelper = new AttendanceSheetHelper(context);
         date.setText(attendanceSheet.getCurrentSheetDate());
         day.setText(attendanceSheet.getDayOfWeek());
         hour.setText(attendanceSheet.getCurrentHour());
@@ -125,8 +134,10 @@ public class AttendanceFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        if(v.getTag() == null){
 
-        if (v.getTag().equals("notExpended")) {
+        }
+        else if (v.getTag().equals("notExpended")) {
             v.setBackgroundResource(R.drawable.expnded_tab);
             v.setTag("expended");
             ((TextView) v).setTextColor(getResources().getColor(R.color.white));
@@ -152,7 +163,9 @@ public class AttendanceFragment extends Fragment implements View.OnClickListener
                     tab6.setLayoutParams(newTablayoutParams);
                     break;
             }
-        } else if(v.getTag().equals("expended")){
+            return;
+        }
+        else if(v.getTag().equals("expended")){
             v.setBackgroundResource(R.drawable.expend_tab);
             v.setTag("notExpended");
             ((TextView) v).setTextColor(getResources().getColor(R.color.grey));
@@ -176,14 +189,25 @@ public class AttendanceFragment extends Fragment implements View.OnClickListener
                     tab6.setLayoutParams(tabsParams);
                     break;
             }
+            return;
         }
-        else if(v.getId() == R.id.createAttendance){
-
+        if(v.getId() == R.id.createAttendance){
+            if(titleEt.getText().toString().equals("")){
+                Toast.makeText(context, "עלייך למלא כותרת לטופס הנוכחות.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            attendanceSheet.setAttendances(attendances);
+            attendanceSheet.setTitle(titleEt.getText().toString());
+            sheetHelper.open();
+            sheetHelper.insertAttendanceSheet(attendanceSheet);
+            sheetHelper.close();
         }
     }
 
     private void orderUsers(){
+
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
         for(int i = 0; i <users.size(); i++){
             if(users.get(i) instanceof UserStudent) {
 
@@ -197,10 +221,14 @@ public class AttendanceFragment extends Fragment implements View.OnClickListener
                 userName.setLayoutParams(layoutParams);
                 userName.setTextSize(18);
                 userName.setText(users.get(i).getFirstName() + " " + users.get(i).getLastName());
-                Log.e("userName",userName.getText().toString());
+
                 checkBox.setTag(users.get(i).getId());
+                checkBox.setOnCheckedChangeListener(this);
                 userCheckBoxLayout.addView(userName);
                 userCheckBoxLayout.addView(checkBox);
+
+                attendances.add(new Attendance(users.get(i).getId(),0));
+
                 if (users.get(i).getGroup().get(0).contains("ז"))
                     tab1.addView(userCheckBoxLayout);
 
@@ -228,5 +256,20 @@ public class AttendanceFragment extends Fragment implements View.OnClickListener
         return pixels;
     }
 
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        for(int i = 0; i < attendances.size(); i++){
+            if (attendances.get(i).getUserId() == (long)buttonView.getTag()){
+                if(isChecked){
+                    attendances.get(i).setAttendanceCode(1);
+                    return;
+                }
+                else{
+                    attendances.get(i).setAttendanceCode(0);
+                    return;
+                }
+            }
+        }
+    }
 
 }

@@ -11,6 +11,7 @@ public class AttendanceSheet {
     private String currentHour;
     private String dayOfWeek;
     private ArrayList<Attendance> attendances;
+    private long sheetId;
     public AttendanceSheet(String title){
         this.title = title;
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -66,5 +67,13 @@ public class AttendanceSheet {
 
     public void setAttendances(ArrayList<Attendance> attendances) {
         this.attendances = attendances;
+    }
+
+    public void setSheetId(long sheetId) {
+        this.sheetId = sheetId;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
