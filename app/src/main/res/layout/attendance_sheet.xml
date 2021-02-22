@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:layoutDirection="ltr"
+    android:orientation="vertical">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:id="@+id/searchEditText"
+        android:gravity="center"
+        android:hint="חפש חניך"
+        android:visibility="gone"
+        android:background="@drawable/edit_text_background"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_background"
+        android:gravity="center"
+        android:id="@+id/attendanceTitle"
+        android:hint="הוסף כותרת דף נוכחות"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:id="@+id/hour"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:textSize="18sp"
+            android:id="@+id/day"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:id="@+id/date"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="60dp"
+        android:id="@+id/tab1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tab_background"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/ז"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:background="@drawable/expend_tab"
+            android:gravity="center"
+            android:text="שכבה ז'"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tab2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="15dp"
+        android:background="@drawable/tab_background"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/ח"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:background="@drawable/expend_tab"
+            android:gravity="center"
+            android:text="שכבה ח'"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tab3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tab_background"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/ט"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:background="@drawable/expend_tab"
+            android:gravity="center"
+            android:text="שכבה ט'"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tab4"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="15dp"
+        android:background="@drawable/tab_background"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/י"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:background="@drawable/expend_tab"
+            android:gravity="center"
+            android:text="שכבה י'"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@drawable/tab_background"
+        android:id="@+id/tab5"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/יא"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:background="@drawable/expend_tab"
+            android:gravity="center"
+            android:text="שכבה יא'"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tab6"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:layout_marginVertical="15dp"
+        android:background="@drawable/tab_background"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/יב"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:background="@drawable/expend_tab"
+            android:gravity="center"
+            android:text="שכבה יב'"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</LinearLayout>
+</ScrollView>
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:theme="@style/darkBlueStyle"
+    app:rippleColor="@color/blue"
+    android:src="@drawable/ic_add_black_24dp"
+    android:backgroundTint="@color/darkBlue"
+    android:id="@+id/createAttendance"
+    android:layout_margin="15dp"/>
+</FrameLayout>
