@@ -25,4 +25,12 @@ public class Attendance {
     public void setAttendanceCode(int attendanceCode) {
         this.attendanceCode = attendanceCode;
     }
+
+    @Override
+    public String toString() {
+        return "Attendance{" +
+                "userId=" + userId +
+                ", attendanceCode=" + attendanceCode +
+                '}';
+    }
 }

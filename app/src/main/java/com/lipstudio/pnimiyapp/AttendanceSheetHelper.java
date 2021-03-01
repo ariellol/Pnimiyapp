@@ -35,7 +35,7 @@ public class AttendanceSheetHelper extends SQLiteOpenHelper {
              SHEET_TABLE + " REAL);";
 
     public static final String CREATE_ATTENDANCE_TABLE = "CREATE TABLE IF NOT EXISTS " + ATTENDANCE_TABLE +
-            " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USER_ID + " INTEGER, " + COLUMN_ATTENDANCE_CODE + " INTEGER, " +
+            " (" + COLUMN_ID + " INTEGER, " + COLUMN_USER_ID + " INTEGER, " + COLUMN_ATTENDANCE_CODE + " INTEGER, " +
             ATTENDANCE_TABLE + " REAL);";
 
     SQLiteDatabase database;
@@ -62,7 +62,7 @@ public class AttendanceSheetHelper extends SQLiteOpenHelper {
         database = this.getWritableDatabase();
     }
 
-    public AttendanceSheet insertAttendanceSheet(AttendanceSheet sheet){
+    public void insertAttendanceSheet(AttendanceSheet sheet){
 
         ContentValues sheetValues = new ContentValues();
 
@@ -76,14 +76,16 @@ public class AttendanceSheetHelper extends SQLiteOpenHelper {
         ContentValues attendanceValues = new ContentValues();
 
         for (int i =0; i< sheet.getAttendances().size(); i++){
+            Log.e("inside",i+"");
            attendanceValues.put(COLUMN_USER_ID,sheet.getAttendances().get(i).getUserId());
             attendanceValues.put(COLUMN_ATTENDANCE_CODE,sheet.getAttendances().get(i).getAttendanceCode());
+            attendanceValues.put(COLUMN_ID,lastId);
+            database.insert(ATTENDANCE_TABLE, null, attendanceValues);
         }
-        database.insert(ATTENDANCE_TABLE, null, attendanceValues);
 
         sheet.setSheetId(lastId);
         Log.e("AttendanceSheetDb", "sheet Created and added to both tables.");
-        return sheet;
+
     }
 
     public ArrayList<Attendance>getAttendancesById(long id){
@@ -104,7 +106,7 @@ public class AttendanceSheetHelper extends SQLiteOpenHelper {
     public ArrayList<AttendanceSheet> getAllAttendanceSheets() {
         ArrayList<AttendanceSheet> attendanceSheets = new ArrayList<>();
         ArrayList<Attendance> attendances;
-        String select_query = "SELECT * FROM " + SHEET_TABLE;
+        String select_query = "SELECT * FROM " + SHEET_TABLE + " ORDER BY " + COLUMN_ID + " DESC";
         Cursor cursor = database.rawQuery(select_query, null);
 
         if (cursor.getCount() > 0) {
@@ -114,7 +116,8 @@ public class AttendanceSheetHelper extends SQLiteOpenHelper {
                 String day = cursor.getString(cursor.getColumnIndex(COLUMN_DAY));
                 String hour = cursor.getString(cursor.getColumnIndex(COLUMN_HOUR));
                 attendances = getAttendancesById(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
-                attendanceSheets.add()
+
+                attendanceSheets.add(new AttendanceSheet(title,attendances,date,day,hour));
             }
         }
         return attendanceSheets;

@@ -201,6 +201,7 @@ public class AttendanceFragment extends Fragment implements View.OnClickListener
             sheetHelper.open();
             sheetHelper.insertAttendanceSheet(attendanceSheet);
             sheetHelper.close();
+            Toast.makeText(context, "טופס הנוכחות הוזן בהצלחה.", Toast.LENGTH_SHORT).show();
         }
     }
 

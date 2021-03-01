@@ -145,9 +145,9 @@ public class ListChangeUser extends Fragment implements View.OnClickListener{
             for(int i = 0; i <users.size(); i++){
                 if(users.get(i) instanceof UserStudent) {
 
-                    students.add((UserStudent) users.get(i));
                     TextView userName = new TextView(context);
-                    userName.setTag(i);
+                    userName.setTag(students.size());
+                    students.add((UserStudent) users.get(i));
                     userName.setOnClickListener(this);
                     userName.setLayoutParams(layoutParams);
                     userName.setTextSize(18);

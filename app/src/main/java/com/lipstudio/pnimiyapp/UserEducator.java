@@ -9,5 +9,8 @@ public class UserEducator extends User{
         super(firstName,lastName,id,password,groups);
     }
 
-
+    @Override
+    public String toString() {
+        return super.toString() + " UserEducator";
+    }
 }

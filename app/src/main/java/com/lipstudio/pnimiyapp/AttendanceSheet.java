@@ -1,10 +1,11 @@
 package com.lipstudio.pnimiyapp;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class AttendanceSheet {
+public class AttendanceSheet implements Serializable {
 
     private String title;
     private String currentSheetDate;
@@ -33,6 +34,14 @@ public class AttendanceSheet {
 
         SimpleDateFormat dayFormat = new SimpleDateFormat("EEE");
         dayOfWeek = dayFormat.format(Calendar.getInstance().getTime());
+    }
+
+    public AttendanceSheet(String title, ArrayList<Attendance> attendances, String date, String day, String hour){
+        this.title = title;
+        this.attendances = attendances;
+        this.currentSheetDate = date;
+        this.dayOfWeek = day;
+        this.currentHour = hour;
     }
 
     public String getTitle() {

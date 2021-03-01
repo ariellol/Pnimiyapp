@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +28,7 @@ public class AdminPageFragment extends Fragment implements View.OnClickListener,
         view.findViewById(R.id.notification_title).setOnFocusChangeListener(this);
         view.findViewById(R.id.notification_content).setOnFocusChangeListener(this);
         view.findViewById(R.id.changeUserBtn).setOnClickListener(this);
+        view.findViewById(R.id.attendanceHistory).setOnClickListener(this);
         Button addUserBtn = view.findViewById(R.id.addUserBtn);
         addUserBtn.setOnClickListener(this);
         Button addAttendanceSheet = view.findViewById(R.id.addAttendanceBtn);
@@ -38,17 +40,27 @@ public class AdminPageFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+
             case R.id.addUserBtn:
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AddUserFragment())
                         .addToBackStack(null).commit();
                 break;
+
             case R.id.changeUserBtn:
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListChangeUser())
                         .addToBackStack(null).commit();
                 break;
+
+            case R.id.attendanceHistory:
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AttendanceHistoryFragment())
+                        .addToBackStack(null).commit();
+                break;
+
             case R.id.addAttendanceBtn:
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AttendanceFragment())
                         .addToBackStack(null).commit();
+                break;
+
         }
     }
 

@@ -61,7 +61,6 @@ public class User implements Serializable {
         this.group = group;
     }
 
-
     @Override
     public String toString() {
         return "User{" +

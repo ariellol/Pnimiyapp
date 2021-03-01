@@ -38,7 +38,7 @@ public class UserStudent extends User{
 
     @Override
     public String toString() {
-        return "UserStudent{" +
+        return super.toString() + " UserStudent{" +
                 "editContent=" + editContent +
                 ", editSchedule=" + editSchedule +
                 '}';

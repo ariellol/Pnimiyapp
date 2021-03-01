@@ -84,6 +84,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 transaction.commit();
                 navigationView.setCheckedItem(R.id.homePage);
                 break;
+            case R.id.schedulePage:
+                transaction.replace(R.id.fragment_container, new ScheduleFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+                navigationView.setCheckedItem(R.id.schedulePage);
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
