@@ -2,7 +2,8 @@
 
 <RelativeLayout android:layout_width="250dp"
     android:background="@drawable/message_dialog_tab"
-    android:layout_height="150dp"
+    android:layout_height="170dp"
+    android:layoutDirection="rtl"
     android:layout_gravity="center"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -15,7 +16,30 @@
         android:gravity="center"
         android:id="@+id/eventDateDialog"/>
 
-    <View
+    <ImageView
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/left_arrow"
+        android:src="@drawable/ic_keyboard_arrow_left_black_24dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="15dp"
+        android:textColor="@color/white"
+        android:id="@+id/eventsNumTextView"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/right_arrow"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/ic_keyboard_arrow_right_black_24dp"/>
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -24,7 +48,7 @@
         android:id="@+id/eventTitleDialog"
         android:layout_marginTop="40dp"/>
 
-    <View
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"

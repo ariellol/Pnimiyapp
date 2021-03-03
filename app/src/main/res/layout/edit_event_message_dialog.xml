@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:layout_width="250dp"
+    android:background="@drawable/message_dialog_tab"
+    android:layout_height="170dp"
+    android:layoutDirection="rtl"
+    android:layout_gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_margin="2dp"
+        android:id="@+id/addEventBtn"
+        android:src="@drawable/add_black"
+        android:background="@drawable/oval_button"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:paddingVertical="5dp"
+        android:gravity="center"
+        android:id="@+id/eventDateDialog"/>
+
+    <EditText
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:background="@drawable/edit_text_background"
+        android:textSize="18sp"
+        android:hint="כותרת אירוע"
+        android:id="@+id/eventTitleDialog"
+        android:layout_marginTop="50dp"/>
+
+    <EditText
+        android:layout_width="230dp"
+        android:background="@drawable/edit_text_background"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_centerHorizontal="true"
+        android:hint="תיאור אירוע"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:id="@+id/eventDescriptionDialog"
+        android:layout_marginTop="110dp"/>
+
+</RelativeLayout>

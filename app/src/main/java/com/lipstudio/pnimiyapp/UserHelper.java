@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.CREATE_ATTENDANCE_TABLE;
 import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.CREATE_SHEET_TABLE;
+import static com.lipstudio.pnimiyapp.ScheduleHelper.CREATE_EVENT_TABLE;
 
 public class UserHelper extends SQLiteOpenHelper {
 
@@ -55,7 +56,8 @@ public class UserHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_USER_TO_GROUP);
         db.execSQL(CREATE_SHEET_TABLE);
         db.execSQL(CREATE_ATTENDANCE_TABLE);
-        Log.e("database"," users table Created.");
+        db.execSQL(CREATE_EVENT_TABLE);
+        Log.e("database"," all tables has been Created.");
     }
 
     public void open(){
