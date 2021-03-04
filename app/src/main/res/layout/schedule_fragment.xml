@@ -1,44 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layoutDirection="rtl"
-    android:orientation="vertical">
+    android:scrollbarSize="0dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-<LinearLayout
-    android:background="@drawable/edit_text_back_cyan_selected"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layoutDirection="rtl"
-    android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/watchMode"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:background="@drawable/ic_remove_red_eye_black_24dp" />
+            android:layoutDirection="rtl">
 
-        <ImageView
-            android:id="@+id/editMode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_mode_edit_black_24dp" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:id="@+id/modes"
+                android:layout_centerHorizontal="true"
+                android:layoutDirection="rtl"
+                android:orientation="horizontal">
 
-    <CalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:focusedMonthDateColor="@color/blue"
-        android:layout_marginBottom="15dp"/>
-</LinearLayout>
-</LinearLayout>
+                <ImageView
+                    android:id="@+id/watchMode"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/ic_remove_red_eye_black_24dp" />
+
+                <ImageView
+                    android:id="@+id/editMode"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/ic_mode_edit_black_24dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dayScheduleLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/modes"
+                android:layout_marginVertical="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/blue"
+                    android:layout_gravity="center"
+                    android:text="לוז יומי"
+                    android:textSize="28sp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/lightGrey"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:minHeight="60dp">
+                    <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                        android:id="@+id/noLuz"
+                        android:text="אין לוז להיום כרגע..."/>
+
+                    <ImageView
+                        android:src="@drawable/ic_add_black_24dp"
+                        android:layout_width="wrap_content"
+                        android:visibility="gone"
+                        android:id="@+id/open_day_event_dialog"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/blue_circle_btn"/>
+            </LinearLayout>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/year_schedule"
+                android:layout_below="@id/dayScheduleLayout"
+                android:textColor="@color/blue"
+                android:id="@+id/year_sched"
+                android:layout_marginTop="30dp"
+                android:layout_centerHorizontal="true"
+                android:textSize="28sp" />
+
+            <com.applandeo.materialcalendarview.CalendarView
+                android:id="@+id/calendarView"
+                android:layout_width="match_parent"
+                android:layout_height="380dp"
+                android:layoutDirection="rtl"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@id/year_sched"
+                android:textDirection="rtl"
+                app:eventsEnabled="true"
+                app:headerColor="@color/blue"
+                app:highlightedDaysLabelsColor="@color/darkBlue"
+                app:todayLabelColor="@color/blue" />
+
+        </RelativeLayout>
+
+</ScrollView>

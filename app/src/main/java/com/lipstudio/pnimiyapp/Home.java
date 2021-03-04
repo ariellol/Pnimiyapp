@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -20,6 +21,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -35,14 +37,16 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     DrawerLayout drawerLayout;
     Toolbar toolbar;
     NavigationView navigationView;
-
+    TextView toolbarTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(getString(R.string.app_name));
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        toolbarTitle = findViewById(R.id.toolbar_title);
         drawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close);
@@ -51,6 +55,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         toggle.syncState();
 
         navigationView = findViewById(R.id.navView);
+        navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(this);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
@@ -66,6 +71,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             drawerLayout.closeDrawer(GravityCompat.START);
         else
             super.onBackPressed();
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (currentFragment instanceof AdminPageFragment)
+            toolbarTitle.setText(getResources().getText(R.string.admin_page));
+
     }
 
     @Override
@@ -77,18 +86,27 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 transaction.addToBackStack(null);
                 transaction.commit();
                 navigationView.setCheckedItem(R.id.adminPage);
+                toolbar.setBackgroundResource(R.color.primaryColorGreen);
+
+                toolbarTitle.setText(getResources().getText(R.string.admin_page));
                 break;
             case R.id.homePage:
                 transaction.replace(R.id.fragment_container, new HomeFragment());
                 transaction.addToBackStack(null);
                 transaction.commit();
                 navigationView.setCheckedItem(R.id.homePage);
+                setTheme(R.style.AppTheme);
+                toolbar.setBackgroundResource(R.color.primaryColorGreen);
+                toolbarTitle.setText(getResources().getText(R.string.app_name));
                 break;
             case R.id.schedulePage:
                 transaction.replace(R.id.fragment_container, new ScheduleFragment());
                 transaction.addToBackStack(null);
                 transaction.commit();
                 navigationView.setCheckedItem(R.id.schedulePage);
+                setTheme(R.style.timePickerTheme);
+                toolbar.setBackgroundResource(R.color.blue);
+                toolbarTitle.setText(getResources().getText(R.string.schedule_page));
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -119,5 +137,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         else
             v.setBackgroundResource(R.drawable.edit_text_background);
     }
+
 
 }

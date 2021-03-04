@@ -4,34 +4,38 @@
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layoutDirection="rtl"
     android:scrollbarSize="0dp">
 
     <LinearLayout
         android:id="@+id/mainAdminLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layoutDirection="rtl"
         android:orientation="vertical"
         android:overScrollMode="ifContentScrolls"
-        android:textDirection="rtl"
         tools:context=".AdminPage">
 
-
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/addUserBtn"
-                    android:layout_width="120dp"
+                android:layout_width="120dp"
                 android:layout_height="70dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="9.4dp"
                 android:text="הוספת משתמש"
                 android:background="@drawable/rect_btn_cyan"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"/>
 
             <Button
                 android:id="@+id/changeUserBtn"
@@ -54,7 +58,7 @@
                 android:layout_width="120dp"
                 android:layout_height="70dp"
                 android:text="הוספת טופס נוכחות"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="9.4dp"
 
                 android:background="@drawable/rect_darkblue_btn"
                 android:textColor="@color/white"/>
@@ -68,7 +72,7 @@
                 android:background="@drawable/rect_purple_btn"
                 android:textColor="@color/white" />
         </LinearLayout>
-
+    </LinearLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -142,6 +146,7 @@
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:layout_marginVertical="15dp"
+                android:paddingRight="10dp"
                 android:id="@+id/notification_title"
                 android:background="@drawable/edit_text_background"
                 android:hint="כותרת התראה..."
@@ -152,6 +157,8 @@
                 android:layout_height="200dp"
                 android:hint="תוכן התראה..."
                 android:inputType="textMultiLine"
+                android:padding="10dp"
+                android:gravity="top"
                 android:overScrollMode="always"
                 android:scrollbarStyle="insideOverlay"
                 android:id="@+id/notification_content"

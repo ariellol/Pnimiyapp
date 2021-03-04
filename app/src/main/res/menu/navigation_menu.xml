@@ -6,30 +6,35 @@
         <item
             android:id="@+id/homePage"
             android:icon="@drawable/ic_home_black_24dp"
-            android:iconTint="@color/primaryColorGreen"
             android:title="@string/home_page"
+            android:iconTintMode="@color/primaryColorGreen"
+            android:iconTint="@color/primaryColorGreen"
             app:showAsAction="never" />
         <item
             android:id="@+id/schedulePage"
             android:icon="@drawable/ic_schedule_black_24dp"
+            android:iconTintMode="@color/blue"
             android:iconTint="@color/blue"
             android:title="@string/schedule_page"
             app:showAsAction="never" />
         <item
             android:id="@+id/contentPage"
             android:icon="@drawable/instagram"
+            android:iconTintMode="@color/orange"
             android:iconTint="@color/orange"
             android:title="@string/content_page"
             app:showAsAction="never" />
         <item
             android:id="@+id/ideaBox"
             android:icon="@drawable/ic_move_to_inbox_black_24dp"
+            android:iconTintMode="@color/turkiz"
             android:iconTint="@color/turkiz"
             android:title="@string/idea_box"
             app:showAsAction="never" />
         <item
             android:id="@+id/requestsPage"
             android:icon="@drawable/ic_assignment_black_24dp"
+            android:iconTintMode="@color/yellow"
             android:iconTint="@color/yellow"
             android:title="@string/requests_page"
             app:showAsAction="never" />
@@ -42,18 +47,21 @@
                 <item
                     android:id="@+id/reportBugPage"
                     android:icon="@drawable/ic_bug_report_black_24dp"
+                    android:iconTintMode="@color/red"
                     android:iconTint="@color/red"
                     android:title="@string/report_bug"
                     app:showAsAction="never" />
                 <item
                     android:id="@+id/settings"
                     android:icon="@drawable/ic_settings_black_24dp"
+                    android:iconTintMode="@color/grey"
                     android:iconTint="@color/grey"
                     android:title="@string/settings"
                     app:showAsAction="never" />
                 <item
                     android:id="@+id/adminPage"
                     android:icon="@drawable/ic_person_black_24dp"
+                    android:iconTintMode="@color/black"
                     android:iconTint="@color/black"
                     android:title="@string/admin_page"
                     app:showAsAction="never" />

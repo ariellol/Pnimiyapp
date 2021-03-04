@@ -32,7 +32,6 @@
         android:layout_gravity="right"
         android:background="@color/white"
         app:headerLayout="@layout/navigation_header"
-        app:itemIconTint="@color/grey"
         app:itemTextColor="@color/black"
         android:fitsSystemWindows="false"
         app:menu="@menu/navigation_menu" />

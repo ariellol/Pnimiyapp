@@ -20,6 +20,28 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="material_calendar_sunday">א</string>
+    <string name="material_calendar_monday">ב</string>
+    <string name="material_calendar_tuesday">ג</string>
+    <string name="material_calendar_wednesday">ד</string>
+    <string name="material_calendar_thursday">ה</string>
+    <string name="material_calendar_friday">ו</string>
+    <string name="material_calendar_saturday">ש</string>
+
+    <array name="material_calendar_months_array">
+        <item>ינואר</item>
+        <item>פברואר</item>
+        <item>מרץ</item>
+        <item>אפריל</item>
+        <item>מאי</item>
+        <item>יוני</item>
+        <item>יולי</item>
+        <item>אוגוסט</item>
+        <item>ספטמבר</item>
+        <item>אוקטובר</item>
+        <item>נובמבר</item>
+        <item>דצמבר</item>
+    </array>
+
+    <string name="year_schedule">לו"ז שנתי</string>
 </resources>

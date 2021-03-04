@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="300dp"
+    android:layoutDirection="rtl"
+    android:layout_gravity="center"
+    android:gravity="center_horizontal"
+    android:background="@drawable/tab_background"
+    android:orientation="vertical">
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:id="@+id/dayEventTitleDialog"
+        android:gravity="center"
+        android:background="@drawable/edit_text_background"
+        android:hint="כותרת אירוע"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text= "בחירת שעה"
+        android:layout_marginVertical="30dp"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:id="@+id/pick_time_dialog"
+        android:background="@drawable/rect_button_blue"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text= "הוספת אירוע"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:id="@+id/add_event_btn_dialog"
+        android:background="@drawable/button_blue"/>
+
+</LinearLayout>

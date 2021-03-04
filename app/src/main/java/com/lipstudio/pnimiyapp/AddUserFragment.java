@@ -174,4 +174,5 @@ public class AddUserFragment extends Fragment implements View.OnFocusChangeListe
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AdminPageFragment())
         .addToBackStack(null).commit();
     }
+
 }

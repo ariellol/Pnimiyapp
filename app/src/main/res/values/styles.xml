@@ -1,59 +1,76 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.Design.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/primaryColorGreen</item>
         <item name="colorPrimaryDark">@color/grey</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="blueStyle" parent="Theme.Design.Light.NoActionBar">
+    <style name="timePickerTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryDark">@color/grey</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="blueStyle" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/blue</item>
         <item name="colorPrimaryDark">@color/grey</item>
     </style>
 
-    <style name="orangeStyle" parent="Theme.Design.Light.NoActionBar">
+    <style name="orangeStyle" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/orange</item>
         <item name="colorPrimaryDark">@color/grey</item>
     </style>
 
-    <style name="turkizStyle" parent="Theme.Design.Light.NoActionBar">
+    <style name="turkizStyle" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/turkiz</item>
         <item name="colorPrimaryDark">@color/grey</item>
     </style>
 
-    <style name="yellowStyle" parent="Theme.Design.Light.NoActionBar">
+    <style name="yellowStyle" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/yellow</item>
         <item name="colorPrimaryDark">@color/grey</item>
     </style>
 
-    <style name="redStyle" parent="Theme.Design.Light.NoActionBar">
+    <style name="redStyle" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/red</item>
         <item name="colorPrimaryDark">@color/grey</item>
     </style>
 
-    <style name="cyanStyle" parent="Theme.Design.Light.NoActionBar">
+    <style name="cyanStyle" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/cyan</item>
         <item name="colorPrimaryDark">@color/grey</item>
     </style>
 
-    <style name="darkBlueStyle" parent="Theme.Design.Light.NoActionBar">
+    <style name="darkBlueStyle" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/darkBlue</item>
+        <item name="colorPrimaryDark">@color/grey</item>
+    </style>
+
+    <style name="noActionBarNoMaterial" parent="AppTheme">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+        <item name="textAppearanceButton">@color/white</item>
+        <item name="colorPrimary">@color/primaryColorGreen</item>
         <item name="colorPrimaryDark">@color/grey</item>
     </style>
 
