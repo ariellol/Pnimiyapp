@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +24,7 @@ import com.google.android.material.button.MaterialButton;
 public class AdminPageFragment extends Fragment implements View.OnClickListener, View.OnFocusChangeListener {
 
     TextView toolbarTitle;
+    Toolbar toolbar;
 
     @Nullable
     @Override
@@ -37,6 +39,7 @@ public class AdminPageFragment extends Fragment implements View.OnClickListener,
         view.findViewById(R.id.addAttendanceBtn).setOnClickListener(this);
 
         toolbarTitle = getActivity().findViewById(R.id.toolbar_title);
+        toolbar = getActivity().findViewById(R.id.toolbar);
 
         return view;
     }
@@ -51,24 +54,28 @@ public class AdminPageFragment extends Fragment implements View.OnClickListener,
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AddUserFragment())
                         .addToBackStack(null).commit();
                 toolbarTitle.setText("הוספת משתמש");
+                toolbar.setBackgroundColor(getResources().getColor(R.color.blue));
                 break;
 
             case R.id.changeUserBtn:
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListChangeUser())
                         .addToBackStack(null).commit();
                 toolbarTitle.setText("שנה הגדרות משתמש");
+                toolbar.setBackgroundColor(getResources().getColor(R.color.darkBlue));
                 break;
 
             case R.id.attendanceHistory:
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AttendanceHistoryFragment())
                         .addToBackStack(null).commit();
                 toolbarTitle.setText("היסטוריית טפסי נוכחות");
+                toolbar.setBackgroundColor(getResources().getColor(R.color.purple));
                 break;
 
             case R.id.addAttendanceBtn:
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AttendanceFragment())
                         .addToBackStack(null).commit();
                 toolbarTitle.setText("הוספת טופס נוכחות");
+                toolbar.setBackgroundColor(getResources().getColor(R.color.darkBlue));
                 break;
 
         }

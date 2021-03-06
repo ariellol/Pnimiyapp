@@ -38,7 +38,7 @@ public class AttendanceSheetHelper extends SQLiteOpenHelper {
             " (" + COLUMN_ID + " INTEGER, " + COLUMN_USER_ID + " INTEGER, " + COLUMN_ATTENDANCE_CODE + " INTEGER, " +
             ATTENDANCE_TABLE + " REAL);";
 
-    SQLiteDatabase database;
+    static SQLiteDatabase database;
 
     public AttendanceSheetHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -115,12 +115,25 @@ public class AttendanceSheetHelper extends SQLiteOpenHelper {
                 String date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
                 String day = cursor.getString(cursor.getColumnIndex(COLUMN_DAY));
                 String hour = cursor.getString(cursor.getColumnIndex(COLUMN_HOUR));
+                long id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
                 attendances = getAttendancesById(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
 
-                attendanceSheets.add(new AttendanceSheet(title,attendances,date,day,hour));
+                attendanceSheets.add(new AttendanceSheet(title,id,attendances,date,day,hour));
             }
         }
         return attendanceSheets;
+    }
+
+    public void deleteAttendanceSheets(ArrayList<AttendanceSheet> toDeleteAttendance){
+
+        for (int i = 0; i < toDeleteAttendance.size() ; i++) {
+            Log.e("databaseSheet",toDeleteAttendance.get(i).getSheetId()+"");
+            database.delete(SHEET_TABLE,COLUMN_ID+ " = ?", new String[]{String.valueOf(toDeleteAttendance.get(i).getSheetId() )} );
+            database.delete(ATTENDANCE_TABLE,COLUMN_ID+" = ?", new String[]{String.valueOf(toDeleteAttendance.get(i).getSheetId())});
+        }
+    }
+    public static void removeUserFromAttendances(long id){
+        database.delete(ATTENDANCE_TABLE,COLUMN_USER_ID+ " = ?", new String[]{String.valueOf(id)});
     }
 
 

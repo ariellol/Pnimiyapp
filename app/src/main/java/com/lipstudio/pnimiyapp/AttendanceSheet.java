@@ -44,6 +44,15 @@ public class AttendanceSheet implements Serializable {
         this.currentHour = hour;
     }
 
+    public AttendanceSheet(String title,long id, ArrayList<Attendance> attendances, String date, String day, String hour){
+        this.title = title;
+        this.attendances = attendances;
+        this.currentSheetDate = date;
+        this.dayOfWeek = day;
+        this.currentHour = hour;
+        this.sheetId = id;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -67,6 +76,8 @@ public class AttendanceSheet implements Serializable {
                 ", currentSheetDate='" + currentSheetDate + '\'' +
                 ", currentHour='" + currentHour + '\'' +
                 ", dayOfWeek='" + dayOfWeek + '\'' +
+                ", attendances=" + attendances +
+                ", sheetId=" + sheetId +
                 '}';
     }
 
@@ -84,5 +95,9 @@ public class AttendanceSheet implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public long getSheetId() {
+        return sheetId;
     }
 }

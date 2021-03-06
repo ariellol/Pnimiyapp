@@ -27,7 +27,7 @@
                 android:background="@drawable/button_cyan"
                 android:text="מחיקת משתמש"
                 android:id="@+id/deleteUserFr"
-                android:layout_marginRight="30dp"
+                    android:layout_marginRight="15dp"
                 android:textColor="@color/white"
                 android:layout_height="50dp"/>
             <Button

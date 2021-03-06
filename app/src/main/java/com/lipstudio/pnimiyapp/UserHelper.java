@@ -10,6 +10,8 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
+import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.ATTENDANCE_TABLE;
+import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.COLUMN_USER_ID;
 import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.CREATE_ATTENDANCE_TABLE;
 import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.CREATE_SHEET_TABLE;
 import static com.lipstudio.pnimiyapp.ScheduleHelper.CREATE_EVENT_TABLE;
@@ -205,5 +207,6 @@ public class UserHelper extends SQLiteOpenHelper {
     public void deleteUser(User user){
         database.delete(USER_TABLE,COLUMN_ID+" = ?",new String[]{String.valueOf(user.getId())});
         database.delete(USER_TO_GROUP_TABLE,COLUMN_ID+" = ?", new String[]{String.valueOf(user.getId())});
+        database.delete(ATTENDANCE_TABLE,COLUMN_USER_ID+ " = ?", new String[]{String.valueOf(user.getId())});
     }
 }

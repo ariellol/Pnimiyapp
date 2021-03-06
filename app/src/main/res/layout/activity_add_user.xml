@@ -44,6 +44,7 @@
         android:paddingRight="10dp"
         android:inputType="number"
         android:background="@drawable/edit_text_background"
+        android:maxLength="9"
         android:singleLine="true" />
 
     <EditText

@@ -7,15 +7,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
+import androidx.fragment.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
+
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,11 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener , View.OnFocusChangeListener{
@@ -72,41 +65,57 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         else
             super.onBackPressed();
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (currentFragment instanceof AdminPageFragment)
+        if (currentFragment instanceof AdminPageFragment) {
             toolbarTitle.setText(getResources().getText(R.string.admin_page));
+            toolbar.setBackgroundColor(getResources().getColor(R.color.primaryColorGreen));
+        }
+        else if(currentFragment instanceof HomeFragment){
+            toolbarTitle.setText(getResources().getText(R.string.app_name));
+            toolbar.setBackgroundColor(getResources().getColor(R.color.primaryColorGreen));
+        }
+
 
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         switch (menuItem.getItemId()) {
             case R.id.adminPage:
+                if(currentFragment instanceof AdminPageFragment){
+                    break;
+                }
                 transaction.replace(R.id.fragment_container, new AdminPageFragment());
                 transaction.addToBackStack(null);
                 transaction.commit();
-                navigationView.setCheckedItem(R.id.adminPage);
                 toolbar.setBackgroundResource(R.color.primaryColorGreen);
-
                 toolbarTitle.setText(getResources().getText(R.string.admin_page));
                 break;
+
             case R.id.homePage:
+                if(currentFragment instanceof HomeFragment){
+                    break;
+                }
                 transaction.replace(R.id.fragment_container, new HomeFragment());
                 transaction.addToBackStack(null);
                 transaction.commit();
-                navigationView.setCheckedItem(R.id.homePage);
                 setTheme(R.style.AppTheme);
                 toolbar.setBackgroundResource(R.color.primaryColorGreen);
                 toolbarTitle.setText(getResources().getText(R.string.app_name));
                 break;
+
             case R.id.schedulePage:
+                if(currentFragment instanceof ScheduleFragment){
+                    break;
+                }
                 transaction.replace(R.id.fragment_container, new ScheduleFragment());
                 transaction.addToBackStack(null);
                 transaction.commit();
-                navigationView.setCheckedItem(R.id.schedulePage);
                 setTheme(R.style.timePickerTheme);
                 toolbar.setBackgroundResource(R.color.blue);
                 toolbarTitle.setText(getResources().getText(R.string.schedule_page));
+                break;
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);

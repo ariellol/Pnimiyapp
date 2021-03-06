@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.applandeo.materialcalendarview.EventDay;
+import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.google.android.material.timepicker.MaterialTimePicker;
 
@@ -32,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.PrimitiveIterator;
 
 
 public class ScheduleFragment extends Fragment implements View.OnClickListener {
@@ -46,6 +50,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
     ArrayList<Event> events;
     ArrayList<Event> eventsInDate;
     Event currentEvent;
+    SimpleDateFormat dateFormat;
 
     int currentEventCount;
     TextView titleTv;
@@ -64,13 +69,31 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
     Button timePick;
     Button addEventInDay;
     String time;
+    View view;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        context = getActivity();
+        ScheduleHelper schedHelper = new ScheduleHelper(context);
+        schedHelper.open();
+        events = schedHelper.getAllEvents();
+        schedHelper.close();
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.schedule_fragment, container, false);
 
-        context = getActivity();
-        calendarView = view.findViewById(R.id.calendarView);
+        View view = inflater.inflate(R.layout.schedule_fragment, container,false);
+
+        watchMode = view.findViewById(R.id.watchMode);
+        editMode = view.findViewById(R.id.editMode);
+        editMode.setOnClickListener(this);
+        watchMode.setOnClickListener(this);
+        watchMode.setTag(1);
+        editMode.setTag(0);
 
         eventInDayDialog = new Dialog(context);
         eventInDayDialog.setContentView(R.layout.add_day_event_dialog);
@@ -91,16 +114,15 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
                 timePick.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        timePicker.show(getActivity().getSupportFragmentManager(),"timePicker");
+                        timePicker.show(getActivity().getSupportFragmentManager(), "timePicker");
                         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm");
 
                         timePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                time = timePicker.getHour()+ ":" + timePicker.getMinute();
-                                Log.e("timePicked",time);
+                                time = timePicker.getHour() + ":" + timePicker.getMinute();
                                 try {
-                                    Log.e("timeFormatted",timeFormat.parse(time).toString());
+                                    Log.e("timeFormatted", timeFormat.parse(time).toString());
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
@@ -116,42 +138,15 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
         dialog.setContentView(R.layout.event_message_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        watchMode = view.findViewById(R.id.watchMode);
-        editMode = view.findViewById(R.id.editMode);
-        editMode.setOnClickListener(this);
-        watchMode.setOnClickListener(this);
-        watchMode.setTag(1);
-        editMode.setTag(0);
+        calendarView = view.findViewById(R.id.calendarView);
+        updateEvents();
 
-        ScheduleHelper schedHelper = new ScheduleHelper(context);
-        schedHelper.open();
-        events = schedHelper.getAllEvents();
-        schedHelper.close();
-
-        List<EventDay> eventDays = new ArrayList<>();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date date;
-
-        for (int i = 0; i <events.size() ; i++) {
-            try {
-                Log.e("eventDate",events.get(i).getDate());
-                date = dateFormat.parse(events.get(i).getDate());
-                Calendar calendarEvent = Calendar.getInstance();
-                calendarEvent.setTime(date);
-                eventDays.add(new EventDay(calendarEvent,R.drawable.ic_baseline_message_24));
-            }
-            catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-        }
-        calendarView.setEvents(eventDays);
         calendarView.setOnDayClickListener(new OnDayClickListener() {
             @Override
             public void onDayClick(EventDay eventDay) {
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 String date = formatter.format(eventDay.getCalendar().getTime());
-                Log.e("eventDay",date);
+                Log.e("eventDay", date);
 
                 if (editModeBool) {
                     dialog.setCanceledOnTouchOutside(false);
@@ -179,10 +174,11 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
                             scheduleHelper.close();
                             Toast.makeText(context, "האירוע נוצר בהצלחה!", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
+
+                            updateEvents();
                         }
                     });
-                }
-                else {
+                } else {
                     dialog.setContentView(R.layout.event_message_dialog);
                     dialog.setCanceledOnTouchOutside(true);
                     eventDateDialog = dialog.findViewById(R.id.eventDateDialog);
@@ -201,42 +197,41 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
                             eventsInDate.add(events.get(i));
                         }
                     }
-                }
 
-                if (eventsInDate.isEmpty()) {
-                    rightArrow.setImageResource(R.drawable.arrow_right_disabled);
-                    leftArrow.setImageResource(R.drawable.arrow_left_disabled);
-                    descriptionTv.setText("אין אירועים בתאריך זה");
-                    dialog.show();
-                    return;
-                }
-                else {
-                    titleTv.setText(eventsInDate.get(0).getTitle());
-                    descriptionTv.setText(eventsInDate.get(0).getDescription());
-                    eventsNumTv.setText("1 מתוך " + eventsInDate.size());
-                    currentEvent = eventsInDate.get(0);
-                    currentEventCount = 1;
-                }
-
-                checkIfHasRight();
-                checkIfHasLeft();
-
-                rightArrow.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.e("rightArrow", "entered");
-                        goRight();
+                    if (eventsInDate.isEmpty()) {
+                        rightArrow.setImageResource(R.drawable.arrow_right_disabled);
+                        leftArrow.setImageResource(R.drawable.arrow_left_disabled);
+                        descriptionTv.setText("אין אירועים בתאריך זה");
+                        dialog.show();
+                        return;
+                    } else {
+                        titleTv.setText(eventsInDate.get(0).getTitle());
+                        descriptionTv.setText(eventsInDate.get(0).getDescription());
+                        eventsNumTv.setText("1 מתוך " + eventsInDate.size());
+                        currentEvent = eventsInDate.get(0);
+                        currentEventCount = 1;
                     }
-                });
+
+                    checkIfHasRight();
+                    checkIfHasLeft();
+
+                    rightArrow.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.e("rightArrow", "entered");
+                            goRight();
+                        }
+                    });
 
 
-                leftArrow.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.e("leftArrow", "entered");
-                        goLeft();
-                    }
-                });
+                    leftArrow.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.e("leftArrow", "entered");
+                            goLeft();
+                        }
+                    });
+                }
                 dialog.show();
             }
         });
@@ -326,7 +321,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
             editModeBool = true;
             noLuz.setVisibility(View.GONE);
             openEventDialog.setVisibility(View.VISIBLE);
-            //addDayEventViews();
+
         } else if (v.getTag().equals(0) && v.getId() == watchMode.getId()) {
             editMode.setTag(0);
             watchMode.setTag(1);
@@ -338,15 +333,28 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void addDayEventViews(){
-        if(!editModeBool)
-            return;
-
-    }
 
     public int dpToPx(int dps) {
         final float scale = getResources().getDisplayMetrics().density;
         int pixels = (int) (dps * scale + 0.5f);
         return pixels;
+    }
+
+    private void updateEvents() {
+        List<EventDay> eventDays = new ArrayList<>();
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date;
+        for (int i = 0; i < events.size(); i++) {
+            try {
+                date = dateFormat.parse(events.get(i).getDate());
+                Calendar calendarEvent = Calendar.getInstance();
+                calendarEvent.setTime(date);
+                eventDays.add(new EventDay(calendarEvent, R.drawable.ic_baseline_message_24));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        }
+        calendarView.setEvents(eventDays);
     }
 }

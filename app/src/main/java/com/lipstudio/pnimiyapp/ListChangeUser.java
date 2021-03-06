@@ -107,7 +107,7 @@ public class ListChangeUser extends Fragment implements View.OnClickListener{
         } else if(v.getTag().equals("expended")){
             v.setBackgroundResource(R.drawable.expend_tab);
             v.setTag("notExpended");
-            ((TextView) v).setTextColor(getResources().getColor(R.color.grey));
+            ((TextView) v).setTextColor(getResources().getColor(R.color.black));
             switch (v.getId()) {
                 case R.id.ז:
                     tab1.setLayoutParams(tabsParams);

@@ -19,17 +19,17 @@ public class ScheduleHelper extends SQLiteOpenHelper{
 
     public static final String EVENT_TITLE = "eventTitle";
     public static final String EVENT_DATE = "eventDate";
-    public static final String EVENT_DESCRPTION = "eventDescription";
+    public static final String EVENT_DESCRIPTION = "eventDescription";
     public static final String EVENT_ID = "eventId";
 
     public static final String CREATE_EVENT_TABLE = "CREATE TABLE IF NOT EXISTS " + EVENT_TABLE +
-            " (" + EVENT_TITLE + " VARCHAR, " + EVENT_DESCRPTION + " VARCHAR, " + EVENT_DATE + " VARCHAR, " +
+            " (" + EVENT_TITLE + " VARCHAR, " + EVENT_DESCRIPTION + " VARCHAR, " + EVENT_DATE + " VARCHAR, " +
             EVENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + EVENT_TABLE + " REAL);";
 
     SQLiteDatabase database;
 
     public ScheduleHelper(@Nullable Context context) {
-        super(context, EVENT_TABLE, null, DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ScheduleHelper extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
 
         values.put(EVENT_TITLE, event.getTitle());
-        values.put(EVENT_DESCRPTION, event.getDescription());
+        values.put(EVENT_DESCRIPTION, event.getDescription());
         values.put(EVENT_DATE, event.getDate());
 
         long lastId = database.insert(EVENT_TABLE,null,values);
@@ -69,7 +69,7 @@ public class ScheduleHelper extends SQLiteOpenHelper{
             while (cursor.moveToNext()) {
 
                 String title = cursor.getString(cursor.getColumnIndex(EVENT_TITLE));
-                String description = cursor.getString(cursor.getColumnIndex(EVENT_DESCRPTION));
+                String description = cursor.getString(cursor.getColumnIndex(EVENT_DESCRIPTION));
                 long id = cursor.getInt(cursor.getColumnIndex(EVENT_ID));
 
                 events.add(new Event(title, description, date, id));
@@ -88,7 +88,7 @@ public class ScheduleHelper extends SQLiteOpenHelper{
             while (cursor.moveToNext()) {
 
                 String title = cursor.getString(cursor.getColumnIndex(EVENT_TITLE));
-                String description = cursor.getString(cursor.getColumnIndex(EVENT_DESCRPTION));
+                String description = cursor.getString(cursor.getColumnIndex(EVENT_DESCRIPTION));
                 String date = cursor.getString(cursor.getColumnIndex(EVENT_DATE));
                 long id = cursor.getInt(cursor.getColumnIndex(EVENT_ID));
 

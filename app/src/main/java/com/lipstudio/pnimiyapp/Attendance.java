@@ -4,6 +4,7 @@ public class Attendance {
 
     private long userId;
     private int attendanceCode;
+    private long attendanceSheetId;
 
     public Attendance(long userId, int attendanceCode){
         this.userId = userId;
@@ -24,6 +25,14 @@ public class Attendance {
 
     public void setAttendanceCode(int attendanceCode) {
         this.attendanceCode = attendanceCode;
+    }
+
+    public long getAttendanceSheetId() {
+        return attendanceSheetId;
+    }
+
+    public void setAttendanceSheetId(long attendanceSheetId) {
+        this.attendanceSheetId = attendanceSheetId;
     }
 
     @Override
