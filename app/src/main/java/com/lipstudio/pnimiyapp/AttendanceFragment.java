@@ -3,6 +3,7 @@ package com.lipstudio.pnimiyapp;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -201,6 +202,8 @@ public class AttendanceFragment extends Fragment implements View.OnClickListener
             sheetHelper.open();
             sheetHelper.insertAttendanceSheet(attendanceSheet);
             sheetHelper.close();
+            getActivity().findViewById(R.id.toolbar).setBackgroundResource(R.color.primaryColorGreen);
+            ((TextView)getActivity().findViewById(R.id.toolbar_title)).setText(getResources().getText(R.string.admin_page));
             Toast.makeText(context, "טופס הנוכחות הוזן בהצלחה.", Toast.LENGTH_SHORT).show();
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AdminPageFragment()).addToBackStack(null).commit();
         }
@@ -209,14 +212,15 @@ public class AttendanceFragment extends Fragment implements View.OnClickListener
     private void orderUsers(){
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
+        LinearLayout.LayoutParams checkBoxLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        checkBoxLayoutParams.gravity = Gravity.LEFT;
         for(int i = 0; i <users.size(); i++){
             if(users.get(i) instanceof UserStudent) {
 
                 LinearLayout userCheckBoxLayout = new LinearLayout(context);
                 userCheckBoxLayout.setLayoutParams(layoutParams);
                 CheckBox checkBox = new CheckBox(context);
-                checkBox.setLayoutParams(layoutParams);
+                checkBox.setLayoutParams(checkBoxLayoutParams);
 
                 students.add((UserStudent) users.get(i));
                 TextView userName = new TextView(context);
@@ -226,8 +230,8 @@ public class AttendanceFragment extends Fragment implements View.OnClickListener
 
                 checkBox.setTag(users.get(i).getId());
                 checkBox.setOnCheckedChangeListener(this);
-                userCheckBoxLayout.addView(userName);
                 userCheckBoxLayout.addView(checkBox);
+                userCheckBoxLayout.addView(userName);
 
                 attendances.add(new Attendance(users.get(i).getId(),0));
 

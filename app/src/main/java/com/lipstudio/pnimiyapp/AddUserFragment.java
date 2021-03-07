@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -172,6 +173,8 @@ public class AddUserFragment extends Fragment implements View.OnFocusChangeListe
         Log.e("userToGroup",userHelper.getAllUserToGroup());
         userHelper.close();
         Toast.makeText(context, "המשתמש נוצר בהצלחה!", Toast.LENGTH_LONG).show();
+        getActivity().findViewById(R.id.toolbar).setBackgroundResource(R.color.primaryColorGreen);
+        ((TextView)getActivity().findViewById(R.id.toolbar_title)).setText(getResources().getText(R.string.admin_page));
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AdminPageFragment())
         .addToBackStack(null).commit();
     }

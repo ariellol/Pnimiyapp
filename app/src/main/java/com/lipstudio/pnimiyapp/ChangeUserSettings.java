@@ -157,6 +157,8 @@ public class ChangeUserSettings extends Fragment implements View.OnFocusChangeLi
         helper.updateUser(newStudent);
         helper.close();
         Toast.makeText(context, "המשתמש עודכן בהצלחה!", Toast.LENGTH_SHORT).show();
+        getActivity().findViewById(R.id.toolbar).setBackgroundResource(R.color.primaryColorGreen);
+        ((TextView)getActivity().findViewById(R.id.toolbar_title)).setText(getResources().getText(R.string.admin_page));
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AdminPageFragment())
                 .addToBackStack(null).commit();
     }
