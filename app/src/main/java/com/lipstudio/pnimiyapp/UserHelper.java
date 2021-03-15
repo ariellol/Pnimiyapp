@@ -14,7 +14,9 @@ import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.ATTENDANCE_TABLE;
 import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.COLUMN_USER_ID;
 import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.CREATE_ATTENDANCE_TABLE;
 import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.CREATE_SHEET_TABLE;
+import static com.lipstudio.pnimiyapp.ScheduleHelper.CREATE_EVENT_DAY_TABLE;
 import static com.lipstudio.pnimiyapp.ScheduleHelper.CREATE_EVENT_TABLE;
+import static com.lipstudio.pnimiyapp.ScheduleHelper.EVENT_DAY_TABLE;
 
 public class UserHelper extends SQLiteOpenHelper {
 
@@ -59,6 +61,7 @@ public class UserHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_SHEET_TABLE);
         db.execSQL(CREATE_ATTENDANCE_TABLE);
         db.execSQL(CREATE_EVENT_TABLE);
+        db.execSQL(CREATE_EVENT_DAY_TABLE);
         Log.e("database"," all tables has been Created.");
     }
 
@@ -72,6 +75,7 @@ public class UserHelper extends SQLiteOpenHelper {
         String drop_query = "DROP TABLE IF EXISTS";
         db.execSQL(drop_query + USER_TABLE);
         db.execSQL(drop_query + USER_TO_GROUP_TABLE);
+        db.execSQL(drop_query + EVENT_DAY_TABLE);
         onCreate(db);
     }
 

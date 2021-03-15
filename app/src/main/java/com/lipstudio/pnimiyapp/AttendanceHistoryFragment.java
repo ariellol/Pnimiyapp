@@ -54,9 +54,6 @@ public class AttendanceHistoryFragment extends Fragment{
         sheetAdapter = new AttendanceAdapter(context, 0, attendanceSheets);
         attendanceListView.setAdapter(sheetAdapter);
 
-        for (int i = 0; i < attendanceSheets.size() ; i++) {
-            Log.e("attendanceId",attendanceSheets.get(i).getSheetId()+"");
-        }
         attendanceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -132,6 +129,7 @@ public class AttendanceHistoryFragment extends Fragment{
                         }
                     }
                     sheetAdapter.notifyDataSetChanged();
+                    deleteAttendanceSheet.clear();
                 }
 
                 else{
@@ -141,6 +139,7 @@ public class AttendanceHistoryFragment extends Fragment{
                         sheet.setTag(null);
                     }
                     sheetAdapter.notifyDataSetChanged();
+                    deleteAttendanceSheet.clear();
                 }
                 navigationView.setVisibility(View.GONE);
                 deleteMode = false;

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layoutDirection="rtl">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="8"
+        android:id="@+id/dayInCalendar"
+        android:textSize="16sp"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxHeight="30dp"
+        android:id="@+id/messageIcon"
+        android:src="@drawable/ic_baseline_message_24"
+        android:maxWidth="30dp"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:id="@+id/highlighted"
+        android:background="@color/blue"/>
+
+</LinearLayout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group>
+        <item android:title="מחיקה"
+            android:icon="@drawable/ic_baseline_delete_24"
+            android:id="@+id/deleteEventItem"/>
+
+        <item android:id="@+id/cancelEventItem"
+            android:icon="@drawable/ic_baseline_cancel_24"
+            android:title="ביטול"/>
+    </group>
+</menu>

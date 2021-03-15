@@ -24,7 +24,6 @@ public class AttendanceAdapter extends ArrayAdapter<AttendanceSheet>{
         super(context, resource,sheets);
         this.context = context;
         this.attendanceSheets = sheets;
-        Log.e("infoAdapter","aaaa");
     }
 
     @NonNull

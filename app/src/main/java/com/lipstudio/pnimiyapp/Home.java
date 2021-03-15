@@ -73,6 +73,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             toolbarTitle.setText(getResources().getText(R.string.app_name));
             toolbar.setBackgroundColor(getResources().getColor(R.color.primaryColorGreen));
         }
+        else if(currentFragment instanceof InstagramFragment){
+            toolbarTitle.setText(getResources().getText(R.string.content_page));
+            toolbar.setBackgroundResource(R.color.orange);
+        }
 
 
     }
@@ -100,7 +104,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 transaction.replace(R.id.fragment_container, new HomeFragment());
                 transaction.addToBackStack(null);
                 transaction.commit();
-                setTheme(R.style.AppTheme);
                 toolbar.setBackgroundResource(R.color.primaryColorGreen);
                 toolbarTitle.setText(getResources().getText(R.string.app_name));
                 break;
@@ -112,9 +115,18 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 transaction.replace(R.id.fragment_container, new ScheduleFragment());
                 transaction.addToBackStack(null);
                 transaction.commit();
-                setTheme(R.style.timePickerTheme);
                 toolbar.setBackgroundResource(R.color.blue);
                 toolbarTitle.setText(getResources().getText(R.string.schedule_page));
+                break;
+            case R.id.contentPage:
+                if (currentFragment instanceof InstagramFragment){
+                    break;
+                }
+                transaction.replace(R.id.fragment_container, new InstagramFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+                toolbar.setBackgroundResource(R.color.orange);
+                toolbarTitle.setText(getResources().getText(R.string.content_page));
                 break;
         }
 

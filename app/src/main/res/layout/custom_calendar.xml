@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="80dp"
             android:src="@drawable/ic_keyboard_arrow_left_black_24dp"/>
 
         <TextView
@@ -30,7 +30,7 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="80dp"
             android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
             android:layout_height="wrap_content"/>
     </RelativeLayout>
@@ -46,33 +46,33 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
+            android:layout_marginRight="50dp"
             android:text="ב'"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
+            android:layout_marginRight="50dp"
             android:text="ג'"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
+            android:layout_marginRight="50dp"
 
             android:text="ד'"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
+            android:layout_marginRight="50dp"
             android:text="ה'"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
+            android:layout_marginRight="50dp"
             android:text="ו'"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
+            android:layout_marginRight="50dp"
             android:text="ש'"/>
     </LinearLayout>
     <GridView

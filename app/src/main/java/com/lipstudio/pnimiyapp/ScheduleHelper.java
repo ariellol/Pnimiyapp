@@ -15,12 +15,22 @@ public class ScheduleHelper extends SQLiteOpenHelper{
 
     public static final String DATABASE_NAME = "users.db";
     public static final String EVENT_TABLE = "eventTable";
+    public static final String EVENT_DAY_TABLE = "eventDayTable";
     public static final int DATABASE_VERSION = 1;
 
     public static final String EVENT_TITLE = "eventTitle";
     public static final String EVENT_DATE = "eventDate";
     public static final String EVENT_DESCRIPTION = "eventDescription";
     public static final String EVENT_ID = "eventId";
+
+    public static final String EVENT_DAY_TITLE = "eventDayTitle";
+    public static final String EVENT_DAY_TIME = "eventDayTime";
+    public static final String EVENT_DAY_DATE = "eventDayDate";
+    public static final String EVENT_DAY_ID = "eventDayId";
+
+    public static final String CREATE_EVENT_DAY_TABLE = "CREATE TABLE IF NOT EXISTS " + EVENT_DAY_TABLE +
+            " (" + EVENT_DAY_TITLE + " VARCHAR, " + EVENT_DAY_TIME + " VARCHAR, " + EVENT_DAY_DATE + " VARCHAR, " +
+            EVENT_DAY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + EVENT_DAY_TABLE + " REAL);";
 
     public static final String CREATE_EVENT_TABLE = "CREATE TABLE IF NOT EXISTS " + EVENT_TABLE +
             " (" + EVENT_TITLE + " VARCHAR, " + EVENT_DESCRIPTION + " VARCHAR, " + EVENT_DATE + " VARCHAR, " +
@@ -60,24 +70,6 @@ public class ScheduleHelper extends SQLiteOpenHelper{
         return event;
     }
 
-    public ArrayList<Event> getEventsByDate(String date){
-        ArrayList<Event> events = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + EVENT_TABLE + " WHERE " + EVENT_DATE  +" = " + date;
-        Cursor cursor = database.rawQuery(selectQuery,null);
-
-        if (cursor.getCount()>0) {
-            while (cursor.moveToNext()) {
-
-                String title = cursor.getString(cursor.getColumnIndex(EVENT_TITLE));
-                String description = cursor.getString(cursor.getColumnIndex(EVENT_DESCRIPTION));
-                long id = cursor.getInt(cursor.getColumnIndex(EVENT_ID));
-
-                events.add(new Event(title, description, date, id));
-            }
-        }
-
-        return events;
-    }
 
     public ArrayList<Event> getAllEvents(){
         ArrayList<Event> events = new ArrayList<>();
@@ -98,5 +90,58 @@ public class ScheduleHelper extends SQLiteOpenHelper{
 
         return events;
     }
+
+    public DayEvent insertDayEvent(DayEvent event){
+        ContentValues values = new ContentValues();
+
+        values.put(EVENT_DAY_TITLE, event.getTitle());
+        values.put(EVENT_DAY_DATE, event.getDate());
+        values.put(EVENT_DAY_TIME,event.getTimePicked());
+
+        long lastId = database.insert(EVENT_DAY_TABLE,null,values);
+
+        event.setId(lastId);
+        return event;
+    }
+
+    public ArrayList<DayEvent> getEventsByDate(String date){
+        ArrayList<DayEvent> events = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + EVENT_DAY_TABLE + " WHERE " + EVENT_DAY_DATE + " = '" + date +"'";
+        Log.e("dateIs",date);
+        Cursor cursor = database.rawQuery(selectQuery,null);
+
+        if (cursor.getCount()>0) {
+            while (cursor.moveToNext()) {
+
+                String title = cursor.getString(cursor.getColumnIndex(EVENT_DAY_TITLE));
+                String time = cursor.getString(cursor.getColumnIndex(EVENT_DAY_TIME));
+                long id = cursor.getInt(cursor.getColumnIndex(EVENT_DAY_ID));
+
+                events.add(new DayEvent(title,time,date,id));
+            }
+        }
+
+        return events;
+    }
+
+    public void deleteOtherEvents(String date){
+        database.delete(EVENT_DAY_TABLE,EVENT_DAY_DATE + " != ?" , new String[]{"'"+date+"'"});
+    }
+
+    public void deleteDayEvents(ArrayList<DayEvent> events){
+        for (int i = 0; i<events.size(); i++){
+            Log.e("eventId",events.get(i).getId()+"");
+            database.delete(EVENT_DAY_TABLE, EVENT_DAY_ID + " = ?", new String[]{String.valueOf(events.get(i).getId())});
+        }
+    }
+
+    public void updateDayEvent(DayEvent event){
+
+        ContentValues values = new ContentValues();
+        values.put(EVENT_DAY_TIME,event.getTimePicked());
+        values.put(EVENT_DAY_TITLE,event.getTitle());
+        database.update(EVENT_DAY_TABLE,values,EVENT_DAY_ID + " = ?", new String[]{String.valueOf(event.getId())});
+    }
+
 
 }

@@ -43,5 +43,6 @@
         <item>דצמבר</item>
     </array>
 
-    <string name="year_schedule">לו"ז שנתי</string>
+    <string name="year_schedule">לו&quot;ז שנתי</string>
+    <string name="day_schedule">לו&quot;ז יומי</string>
 </resources>
