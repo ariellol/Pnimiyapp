@@ -2,6 +2,7 @@ package com.lipstudio.pnimiyapp;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -450,10 +451,14 @@ public class ScheduleFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.edit_watch_mode_menu, menu);
-        this.menu = menu;
-        menu.getItem(1).setIcon(R.drawable.edit_active);
-        dayEventListView.setItemsCanFocus(false);
+        SharedPreferences userPref = getActivity().getSharedPreferences("userSharedPreferences",Context.MODE_PRIVATE);
+        if (userPref.getBoolean("editSchedule",false)){
+            inflater.inflate(R.menu.edit_watch_mode_menu, menu);
+            this.menu = menu;
+            menu.getItem(1).setIcon(R.drawable.edit_active);
+            dayEventListView.setItemsCanFocus(false);
+        }
+
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.lipstudio.pnimiyapp;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -23,7 +25,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
-public class AttendanceHistoryFragment extends Fragment{
+public class AttendanceHistoryFragment extends Fragment implements View.OnClickListener {
 
     ArrayList<AttendanceSheet> attendanceSheets;
     ListView attendanceListView;
@@ -32,6 +34,10 @@ public class AttendanceHistoryFragment extends Fragment{
     int deleteNum = 0;
     BottomNavigationView navigationView;
     ArrayList<AttendanceSheet> deleteAttendanceSheet;
+
+    Dialog dialogDelete;
+    Button deleteAttendanceBtn;
+    Button cancelDeleteAttendanceBtn;
 
     @Nullable
     @Override
@@ -49,6 +55,13 @@ public class AttendanceHistoryFragment extends Fragment{
         sheetHelper.open();
         attendanceSheets = sheetHelper.getAllAttendanceSheets();
         sheetHelper.close();
+
+        dialogDelete = new Dialog(context);
+        dialogDelete.setContentView(R.layout.delete_attendance_dialog);
+        deleteAttendanceBtn = dialogDelete.findViewById(R.id.deleteAttendanceInDialog);
+        deleteAttendanceBtn.setOnClickListener(this);
+        cancelDeleteAttendanceBtn = dialogDelete.findViewById(R.id.cancelDeleteAttendanceInDialog);
+        cancelDeleteAttendanceBtn.setOnClickListener(this);
 
         attendanceListView = view.findViewById(R.id.allAttendances);
         sheetAdapter = new AttendanceAdapter(context, 0, attendanceSheets);
@@ -114,27 +127,11 @@ public class AttendanceHistoryFragment extends Fragment{
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if(item.getItemId() == R.id.deleteAttendances){
-                    AttendanceSheetHelper helper = new AttendanceSheetHelper(context);
-                    helper.open();
-                    helper.deleteAttendanceSheets(deleteAttendanceSheet);
-                    helper.close();
-
-                    for(int i = 0; i<deleteAttendanceSheet.size(); i++){
-                        for (int j = 0; j<attendanceSheets.size(); j++){
-                            if(deleteAttendanceSheet.get(i).getSheetId() == attendanceSheets.get(j).getSheetId()){
-                                attendanceSheets.remove(j);
-                                break;
-                            }
-                        }
-                    }
-                    sheetAdapter.notifyDataSetChanged();
-                    deleteAttendanceSheet.clear();
-                }
-
-                else{
-                    for (int i = 0; i<attendanceSheets.size(); i++){
-                        View sheet = getViewByPosition(i,attendanceListView);
+                if (item.getItemId() == R.id.deleteAttendances) {
+                    dialogDelete.show();
+                } else {
+                    for (int i = 0; i < attendanceSheets.size(); i++) {
+                        View sheet = getViewByPosition(i, attendanceListView);
                         sheet.setBackground(null);
                         sheet.setTag(null);
                     }
@@ -154,7 +151,7 @@ public class AttendanceHistoryFragment extends Fragment{
         final int firstListItemPosition = listView.getFirstVisiblePosition();
         final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
 
-        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+        if (pos < firstListItemPosition || pos > lastListItemPosition) {
             return listView.getAdapter().getView(pos, null, listView);
         } else {
             final int childIndex = pos - firstListItemPosition;
@@ -162,4 +159,37 @@ public class AttendanceHistoryFragment extends Fragment{
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.deleteAttendanceInDialog) {
+            AttendanceSheetHelper helper = new AttendanceSheetHelper(getActivity());
+            helper.open();
+            helper.deleteAttendanceSheets(deleteAttendanceSheet);
+            helper.close();
+
+            for (int i = 0; i < deleteAttendanceSheet.size(); i++) {
+                for (int j = 0; j < attendanceSheets.size(); j++) {
+                    if (deleteAttendanceSheet.get(i).getSheetId() == attendanceSheets.get(j).getSheetId()) {
+                        attendanceSheets.remove(j);
+                        break;
+                    }
+                }
+            }
+            sheetAdapter.notifyDataSetChanged();
+            deleteAttendanceSheet.clear();
+        }
+        else {
+            for (int i = 0; i < attendanceSheets.size(); i++) {
+                View sheet = getViewByPosition(i, attendanceListView);
+                sheet.setBackground(null);
+                sheet.setTag(null);
+            }
+            sheetAdapter.notifyDataSetChanged();
+            deleteAttendanceSheet.clear();
+        }
+        navigationView.setVisibility(View.GONE);
+        deleteMode = false;
+        deleteNum = 0;
+        dialogDelete.dismiss();
+    }
 }

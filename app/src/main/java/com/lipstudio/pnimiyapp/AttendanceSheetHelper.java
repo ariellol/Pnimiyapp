@@ -13,6 +13,9 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static com.lipstudio.pnimiyapp.UserHelper.DATABASE_NAME;
+import static com.lipstudio.pnimiyapp.UserHelper.DATABASE_VERSION;
+
 public class AttendanceSheetHelper extends SQLiteOpenHelper {
 
     public static final String COLUMN_DATE = "date";
@@ -26,8 +29,6 @@ public class AttendanceSheetHelper extends SQLiteOpenHelper {
     public static final String COLUMN_USER_ID = "userId";
     public static final String COLUMN_ATTENDANCE_CODE = "attendanceCode";
 
-    public static final String DATABASE_NAME = "users.db";
-    public static final int DATABASE_VERSION = 1;
 
     public static final String CREATE_SHEET_TABLE = "CREATE TABLE IF NOT EXISTS " + SHEET_TABLE +
             " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +

@@ -1,5 +1,6 @@
 package com.lipstudio.pnimiyapp;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,11 +46,11 @@ public class AttendanceFragment extends Fragment implements View.OnClickListener
     TextView date;
     TextView day;
     TextView hour;
-    EditText search;
     FloatingActionButton addAttendanceSheet;
     ArrayList<Attendance> attendances;
     AttendanceSheet attendanceSheet;
     AttendanceSheetHelper sheetHelper;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -106,23 +107,10 @@ public class AttendanceFragment extends Fragment implements View.OnClickListener
         date.setText(attendanceSheet.getCurrentSheetDate());
         day.setText(attendanceSheet.getDayOfWeek());
         hour.setText(attendanceSheet.getCurrentHour());
-        search = view.findViewById(R.id.searchEditText);
         setHasOptionsMenu(true);
         return view;
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.attendance_sheet_menu,menu);
-        super.onCreateOptionsMenu(menu,inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        search.setVisibility(View.VISIBLE);
-        search.requestFocus();
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {

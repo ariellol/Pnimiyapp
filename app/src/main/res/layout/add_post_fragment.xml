@@ -12,15 +12,28 @@
         <EditText
             android:id="@+id/postDescriptionEt"
             android:layout_width="wrap_content"
-            android:layout_height="250dp"
+            android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
             android:background="@drawable/edit_text_background"
             android:gravity="top"
+            android:maxLength="150"
             android:hint="טקסט חופשי..."
             android:padding="10dp"
             android:textSize="16sp" />
 
+        <EditText
+            android:id="@+id/linkEt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/edit_text_background"
+            android:gravity="top"
+            android:hint="קישור כלשהו"
+            android:padding="10dp"
+            android:textSize="16sp"
+            android:drawableLeft="@drawable/ic_baseline_link_24"/>
         <LinearLayout
             android:id="@+id/addImageButton"
             android:layout_width="wrap_content"
@@ -30,11 +43,11 @@
             android:gravity="center"
             android:orientation="horizontal">
 
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:rotation="90"
-                android:src="@drawable/ic_baseline_link_24" />
+                android:src="@drawable/ic_baseline_image_24" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -50,6 +63,7 @@
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:visibility="gone"
+            android:layout_marginBottom="15dp"
             android:layout_centerInParent="true"
             android:layout_height="320dp"/>
 

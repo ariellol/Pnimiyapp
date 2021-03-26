@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:background="@color/primaryColorGreen">
+        <ImageView
+            android:src="@drawable/white"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:layoutDirection="rtl"
+    android:textDirection="rtl"
+    android:gravity="center"
+    android:layout_centerInParent="true"
+    android:orientation="vertical">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_edit_text"
+            android:inputType="number"
+            android:id="@+id/login_id"
+            android:layout_marginBottom="15dp"
+            android:hint="תעודת זהות"
+            android:maxLength="9"
+            android:paddingRight="10dp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layoutDirection="rtl"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:background="@drawable/login_edit_text"
+            android:paddingRight="10dp"
+            android:paddingEnd="10dp"
+            android:id="@+id/login_password"
+            android:gravity="right|center_vertical"
+            android:textDirection="rtl"
+            android:inputType="textPassword"
+            android:hint="סיסמה"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/login_password"
+            android:layout_centerVertical="true"
+            android:paddingLeft="10dp"
+            android:id="@+id/showPassword"
+            android:src="@drawable/eye_not_selected"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primaryColorGreen"
+        android:layout_marginLeft="100dp"
+        android:layout_marginBottom="15dp"
+        android:text="שכחתי סיסמה"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="כניסה"
+        android:textSize="18dp"
+        android:id="@+id/login_button"
+        android:background="@drawable/button_green"/>
+</LinearLayout>
+</RelativeLayout>

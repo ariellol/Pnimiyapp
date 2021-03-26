@@ -11,12 +11,13 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+import static com.lipstudio.pnimiyapp.UserHelper.DATABASE_NAME;
+import static com.lipstudio.pnimiyapp.UserHelper.DATABASE_VERSION;
+
 public class ScheduleHelper extends SQLiteOpenHelper{
 
-    public static final String DATABASE_NAME = "users.db";
     public static final String EVENT_TABLE = "eventTable";
     public static final String EVENT_DAY_TABLE = "eventDayTable";
-    public static final int DATABASE_VERSION = 1;
 
     public static final String EVENT_TITLE = "eventTitle";
     public static final String EVENT_DATE = "eventDate";

@@ -38,7 +38,6 @@ public class SingleAttendanceHistory extends Fragment {
         for (int i = 0; i<users.size(); i++){
             if(users.get(i) instanceof UserStudent){
                 students.add((UserStudent) users.get(i));
-                Log.e("singleHistory",students.get(i).getFirstName()+ " " + students.get(i).getLastName());
             }
         }
 

@@ -1,6 +1,9 @@
 package com.lipstudio.pnimiyapp;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,10 +29,13 @@ public class AddPostFragment extends Fragment implements View.OnFocusChangeListe
     public static final int PICK_IMAGE = 1;
 
     EditText descriptionEt;
+    EditText linkEt;
     LinearLayout addImageBtn;
     Button publishPostBtn;
     ImageView preview;
     Uri imageUri = null;
+    SharedPreferences userPref;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,7 +46,10 @@ public class AddPostFragment extends Fragment implements View.OnFocusChangeListe
         addImageBtn.setOnClickListener(this);
         publishPostBtn = parent.findViewById(R.id.publishPostBtn);
         publishPostBtn.setOnClickListener(this);
+        linkEt = parent.findViewById(R.id.linkEt);
         preview = parent.findViewById(R.id.imagePreview);
+
+        userPref = getActivity().getSharedPreferences("userSharedPreferences",Context.MODE_PRIVATE);
         return parent;
     }
 
@@ -56,12 +65,16 @@ public class AddPostFragment extends Fragment implements View.OnFocusChangeListe
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.publishPostBtn){
-            if(!imageUri.equals(null)) {
-                Bundle imageBundle = new Bundle();
-                imageBundle.putString("imageUri",imageUri.toString());
-                InstagramFragment instagramFragment = new InstagramFragment();
-                instagramFragment.setArguments(imageBundle);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, instagramFragment)
+            if(imageUri != null) {
+
+                Post post = new Post(descriptionEt.getText().toString(),imageUri.toString(),linkEt.getText().toString()
+                        ,userPref.getLong("userId",0));
+
+                InstagramHelper instagramHelper = new InstagramHelper(getActivity());
+                instagramHelper.open();
+                post.setPostId(instagramHelper.insertNewPost(post));
+                instagramHelper.close();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new InstagramFragment())
                         .addToBackStack(null).commit();
             }
         }
@@ -78,7 +91,7 @@ public class AddPostFragment extends Fragment implements View.OnFocusChangeListe
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == PICK_IMAGE){
+        if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK){
             imageUri = data.getData();
             preview.setImageURI(imageUri);
             preview.setVisibility(View.VISIBLE);

@@ -16,6 +16,10 @@
         <item name="color">@color/white</item>
     </style>
 
+    <style name="AppTheme.Launcher">
+    <item name="android:windowBackground"> @drawable/launch_screen</item>
+
+    </style>
 
     <style name="timePickerTheme" parent="Theme.MaterialComponents">
         <item name="colorPrimary">@color/blue</item>

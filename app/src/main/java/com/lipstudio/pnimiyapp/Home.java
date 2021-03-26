@@ -11,36 +11,57 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import android.content.Context;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Rect;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashSet;
+import java.util.Set;
 
-public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener , View.OnFocusChangeListener{
+
+public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener , View.OnFocusChangeListener, View.OnClickListener{
 
     DrawerLayout drawerLayout;
     Toolbar toolbar;
     NavigationView navigationView;
     TextView toolbarTitle;
+    TextView headerUserName;
+    TextView headerGroup;
+    LinearLayout logout;
+    SharedPreferences userPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         toolbarTitle = findViewById(R.id.toolbar_title);
         drawerLayout = findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close);
 
@@ -53,9 +74,32 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.homePage);
+            toolbarTitle.setText("");
         }
-        AttendanceSheet attendanceSheet = new AttendanceSheet("ארוחת צהריים");
-        Log.e("currentDate",attendanceSheet.toString());
+        View headerView = navigationView.getHeaderView(0);
+        headerUserName = headerView.findViewById(R.id.nameInNav);
+        headerGroup = headerView.findViewById(R.id.groupInNav);
+        logout = headerView.findViewById(R.id.log_out);
+        logout.setOnClickListener(this);
+        String sharedPrefName = "userSharedPreferences";
+        userPreferences = getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE);
+        if(!userPreferences.contains("init")){
+            Intent loginIntent = new Intent(this,Login.class);
+            startActivity(loginIntent);
+        }
+        headerUserName.setText(userPreferences.getString("userName","אורח"));
+        if(!userPreferences.getBoolean("userEducator",false)) {
+            headerGroup.setText(userPreferences.getString("group","ללא שכבה"));
+            navigationView.getMenu().findItem(R.id.adminPage).setVisible(false);
+        }
+        else{
+            Set<String> defSet = new HashSet<>();
+            defSet.add("ללא שכבה");
+            String groups = userPreferences.getStringSet("groups",defSet).toString();
+            headerGroup.setText(groups);
+        }
+
+
     }
 
     @Override
@@ -70,7 +114,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             toolbar.setBackgroundColor(getResources().getColor(R.color.primaryColorGreen));
         }
         else if(currentFragment instanceof HomeFragment){
-            toolbarTitle.setText(getResources().getText(R.string.app_name));
             toolbar.setBackgroundColor(getResources().getColor(R.color.primaryColorGreen));
         }
         else if(currentFragment instanceof InstagramFragment){
@@ -159,5 +202,23 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             v.setBackgroundResource(R.drawable.edit_text_background);
     }
 
+    @Override
+    public void onClick(View v) {
 
+        if (v.getId() == R.id.log_out){
+            userPreferences.edit().clear().apply();
+            Intent loginIntent = new Intent(this,Login.class);
+            startActivity(loginIntent);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode ==1){
+            if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                userPreferences.edit().putBoolean("permissionGranted",true);
+            else
+                userPreferences.edit().putBoolean("permissionGranted",false);
+        }
+    }
 }

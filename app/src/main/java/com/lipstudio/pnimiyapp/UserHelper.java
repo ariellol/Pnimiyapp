@@ -2,18 +2,24 @@ package com.lipstudio.pnimiyapp;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import android.util.Log;
+
 import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 
 import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.ATTENDANCE_TABLE;
 import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.COLUMN_USER_ID;
 import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.CREATE_ATTENDANCE_TABLE;
 import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.CREATE_SHEET_TABLE;
+import static com.lipstudio.pnimiyapp.InstagramHelper.CREATE_INSTAGRAM_TABLE;
+import static com.lipstudio.pnimiyapp.InstagramHelper.INSTAGRAM_TABLE;
+import static com.lipstudio.pnimiyapp.InstagramHelper.USER_ID;
 import static com.lipstudio.pnimiyapp.ScheduleHelper.CREATE_EVENT_DAY_TABLE;
 import static com.lipstudio.pnimiyapp.ScheduleHelper.CREATE_EVENT_TABLE;
 import static com.lipstudio.pnimiyapp.ScheduleHelper.EVENT_DAY_TABLE;
@@ -22,7 +28,7 @@ public class UserHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "users.db";
     public static final String USER_TABLE = "usersTable";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     public static final String COLUMN_ID = "userId";
     public static final String COLUMN_FNAME = "firstName";
@@ -41,16 +47,14 @@ public class UserHelper extends SQLiteOpenHelper {
     public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + USER_TABLE +
             " (" + COLUMN_ID + " INTEGER PRIMARY KEY, " + COLUMN_FNAME + " VARCHAR, " +
             COLUMN_LNAME + " VARCHAR, " + COLUMN_PASSWORD + " VARCHAR, " + COLUMN_TYPE + " VARCHAR, "
-             + COLUMN_EDIT_CONTENT + " INTEGER, " + COLUMN_EDIT_SCHEDULE + " INTEGER, " + USER_TABLE + " REAL)";
+            + COLUMN_EDIT_CONTENT + " INTEGER, " + COLUMN_EDIT_SCHEDULE + " INTEGER, " + USER_TABLE + " REAL)";
 
 
-
-    String[] allColumns ={COLUMN_ID,COLUMN_FNAME,COLUMN_LNAME,COLUMN_PASSWORD,COLUMN_TYPE};
     SQLiteDatabase database;
 
     public UserHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        Log.e("database","UsersHelper Created.");
+        Log.e("database", "UsersHelper Created.");
     }
 
 
@@ -62,35 +66,36 @@ public class UserHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_ATTENDANCE_TABLE);
         db.execSQL(CREATE_EVENT_TABLE);
         db.execSQL(CREATE_EVENT_DAY_TABLE);
-        Log.e("database"," all tables has been Created.");
+        db.execSQL(CREATE_INSTAGRAM_TABLE);
+        Log.e("database", " all tables has been Created.");
     }
 
-    public void open(){
+    public void open() {
         database = getWritableDatabase();
-        Log.e("database","Database is open.");
+        Log.e("database", "Database is open.");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String drop_query = "DROP TABLE IF EXISTS";
+        String drop_query = "DROP TABLE IF EXISTS ";
         db.execSQL(drop_query + USER_TABLE);
         db.execSQL(drop_query + USER_TO_GROUP_TABLE);
         db.execSQL(drop_query + EVENT_DAY_TABLE);
+        db.execSQL(drop_query + INSTAGRAM_TABLE);
         onCreate(db);
     }
 
-    public void insertUser(User user){
-        Log.e("database","Inserting new user.");
+    public void insertUser(User user) {
+        Log.e("database", "Inserting new user.");
         ContentValues values = new ContentValues();
         int editContent = 0;
         int editSchedule = 0;
         String type = "student";
-        if(user instanceof UserShinshin) {
+        if (user instanceof UserShinshin) {
             type = "shinshin";
-            editContent =1;
-            editSchedule =1;
-        }
-        else if(user instanceof UserEducator) {
+            editContent = 1;
+            editSchedule = 1;
+        } else if (user instanceof UserEducator) {
             type = "educator";
             editContent = 1;
             editSchedule = 1;
@@ -99,23 +104,37 @@ public class UserHelper extends SQLiteOpenHelper {
         values.put(COLUMN_FNAME, user.getFirstName());
         values.put(COLUMN_LNAME, user.getLastName());
         values.put(COLUMN_PASSWORD, user.getPassword());
-        values.put(COLUMN_TYPE,type);
-        values.put(COLUMN_EDIT_CONTENT,editContent);
-        values.put(COLUMN_EDIT_SCHEDULE,editSchedule);
+        values.put(COLUMN_TYPE, type);
+        values.put(COLUMN_EDIT_CONTENT, editContent);
+        values.put(COLUMN_EDIT_SCHEDULE, editSchedule);
 
-        database.insert(USER_TABLE,null,values);
+        database.insert(USER_TABLE, null, values);
         insertUserToGroup(user);
 
-        Log.i("database","User has been created.");
+        Log.i("database", "User has been created.");
     }
 
-    public ArrayList<User> getAllUsers(){
-        ArrayList<User> users = new ArrayList<>();
-        String sql_str = "SELECT * FROM " + USER_TABLE;
-        Cursor cursor = database.rawQuery(sql_str,null);
+    public String getUserNameById(long id){
+        Cursor cursor = database.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_ID + " = " + id,null);
 
         if (cursor.getCount()>0){
-            while (cursor.moveToNext()){
+            cursor.moveToNext();
+            String fname = cursor.getString(cursor.getColumnIndex(COLUMN_FNAME));
+            String lname = cursor.getString(cursor.getColumnIndex(COLUMN_LNAME));
+
+
+            return fname + " " + lname;
+        }
+        return "";
+    }
+
+    public ArrayList<User> getAllUsers() {
+        ArrayList<User> users = new ArrayList<>();
+        String sql_str = "SELECT * FROM " + USER_TABLE;
+        Cursor cursor = database.rawQuery(sql_str, null);
+
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
                 long id = cursor.getLong(cursor.getColumnIndex(COLUMN_ID));
                 String fname = cursor.getString(cursor.getColumnIndex(COLUMN_FNAME));
                 String lname = cursor.getString(cursor.getColumnIndex(COLUMN_LNAME));
@@ -129,8 +148,8 @@ public class UserHelper extends SQLiteOpenHelper {
                 if (cursor.getInt(cursor.getColumnIndex(COLUMN_EDIT_SCHEDULE)) == 1)
                     editSchedule = true;
 
-                if(type.equals("student"))
-                    users.add(new UserStudent(fname, lname, id, password, getUserGroup(id),editContent,editSchedule));
+                if (type.equals("student"))
+                    users.add(new UserStudent(fname, lname, id, password, getUserGroup(id), editContent, editSchedule));
                 else if (type.equals("educator"))
                     users.add(new UserEducator(fname, lname, id, password, getUserGroup(id)));
                 else
@@ -141,37 +160,37 @@ public class UserHelper extends SQLiteOpenHelper {
     }
 
 
-    public void insertUserToGroup(User user){
+    public void insertUserToGroup(User user) {
         ContentValues values = new ContentValues();
         for (int i = 0; i < user.getGroup().size(); i++) {
-            values.put(GROUP_ID,user.getGroup().get(i));
-            values.put(COLUMN_ID,user.getId());
-            database.insert(USER_TO_GROUP_TABLE,null,values);
+            values.put(GROUP_ID, user.getGroup().get(i));
+            values.put(COLUMN_ID, user.getId());
+            database.insert(USER_TO_GROUP_TABLE, null, values);
         }
     }
 
-    public String getAllUserToGroup(){
+    public String getAllUserToGroup() {
         String allUsersToGroups = "";
         String query = "SELECT * FROM " + USER_TO_GROUP_TABLE;
 
-        Cursor cursor = database.rawQuery(query,null);
+        Cursor cursor = database.rawQuery(query, null);
 
-        if (cursor.getCount()>0) {
+        if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 allUsersToGroups += "{ GroupId:" + cursor.getString(cursor.getColumnIndex(GROUP_ID)) +
                         ", UserId: " + cursor.getInt(cursor.getColumnIndex(COLUMN_ID)) + " } ";
             }
         }
-         return allUsersToGroups;
+        return allUsersToGroups;
     }
 
-    public ArrayList<String> getUserGroup(long id){
+    public ArrayList<String> getUserGroup(long id) {
         ArrayList<String> groups = new ArrayList<>();
         String query = "SELECT * FROM " + USER_TO_GROUP_TABLE;
-        Cursor cursor = database.rawQuery(query,null);
-        if(cursor.getCount()>0){
-            while (cursor.moveToNext()){
-                if(id == cursor.getLong(cursor.getColumnIndex(COLUMN_ID))){
+        Cursor cursor = database.rawQuery(query, null);
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                if (id == cursor.getLong(cursor.getColumnIndex(COLUMN_ID))) {
                     groups.add(cursor.getString(cursor.getColumnIndex(GROUP_ID)));
                 }
 
@@ -180,37 +199,84 @@ public class UserHelper extends SQLiteOpenHelper {
         return groups;
     }
 
-    public void updateUser(User user){
+    public void updateUser(User user) {
         String type = "student";
         if (user instanceof UserEducator)
             type = "educator";
-        else if(user instanceof  UserShinshin)
+        else if (user instanceof UserShinshin)
             type = "shinshin";
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_FNAME, user.getFirstName());
         values.put(COLUMN_LNAME, user.getLastName());
         values.put(COLUMN_PASSWORD, user.getPassword());
-        values.put(COLUMN_TYPE,type);
-        if(((UserStudent)user).isEditSchedule())
-            values.put(COLUMN_EDIT_SCHEDULE,1);
+        values.put(COLUMN_TYPE, type);
+        if (((UserStudent) user).isEditSchedule())
+            values.put(COLUMN_EDIT_SCHEDULE, 1);
         else
-            values.put(COLUMN_EDIT_SCHEDULE,0);
-        if (((UserStudent)user).isEditContent())
-            values.put(COLUMN_EDIT_CONTENT,1);
+            values.put(COLUMN_EDIT_SCHEDULE, 0);
+        if (((UserStudent) user).isEditContent())
+            values.put(COLUMN_EDIT_CONTENT, 1);
         else
-            values.put(COLUMN_EDIT_CONTENT,0);
+            values.put(COLUMN_EDIT_CONTENT, 0);
 
-        database.update(USER_TABLE,values,COLUMN_ID+" = ?" ,new String[]{String.valueOf(user.getId())});
+        database.update(USER_TABLE, values, COLUMN_ID + " = ?", new String[]{String.valueOf(user.getId())});
 
         ContentValues groupValues = new ContentValues();
-        groupValues.put(GROUP_ID,user.getGroup().get(0));
-        database.update(USER_TO_GROUP_TABLE,groupValues,COLUMN_ID+" = ?",new String[]{String.valueOf(user.getId())});
+        groupValues.put(GROUP_ID, user.getGroup().get(0));
+        database.update(USER_TO_GROUP_TABLE, groupValues, COLUMN_ID + " = ?", new String[]{String.valueOf(user.getId())});
     }
 
-    public void deleteUser(User user){
-        database.delete(USER_TABLE,COLUMN_ID+" = ?",new String[]{String.valueOf(user.getId())});
-        database.delete(USER_TO_GROUP_TABLE,COLUMN_ID+" = ?", new String[]{String.valueOf(user.getId())});
-        database.delete(ATTENDANCE_TABLE,COLUMN_USER_ID+ " = ?", new String[]{String.valueOf(user.getId())});
+    public void deleteUser(User user) {
+        database.delete(USER_TABLE, COLUMN_ID + " = ?", new String[]{String.valueOf(user.getId())});
+        database.delete(USER_TO_GROUP_TABLE, COLUMN_ID + " = ?", new String[]{String.valueOf(user.getId())});
+        database.delete(ATTENDANCE_TABLE, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(user.getId())});
     }
+
+    public User loginUser(long id, String password) {
+
+        String selectUserQuery = "SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_ID + " = " + id;
+        Cursor cursor;
+        try {
+            cursor = database.rawQuery(selectUserQuery, null);
+        } catch (NullPointerException npe) {
+            return null;
+        }
+        if (cursor.getCount() <= 0) {
+            return null;
+        }
+        if (cursor.moveToNext()) {
+            if (cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD)).equals(password)) {
+                String fName = cursor.getString(cursor.getColumnIndex(COLUMN_FNAME));
+                String lName = cursor.getString(cursor.getColumnIndex(COLUMN_LNAME));
+                User user;
+                String type = cursor.getString(cursor.getColumnIndex(COLUMN_TYPE));
+                ArrayList<String> groups = getUserGroup(id);
+
+                if (type.equals("educator")) {
+                    user = new UserEducator(fName, lName, id, password, groups);
+                }
+                else if(type.equals("student")){
+                    int editContentInteger = cursor.getInt(cursor.getColumnIndex(COLUMN_EDIT_CONTENT));
+                    boolean editContent = false;
+                    int editScheduleInteger = cursor.getInt(cursor.getColumnIndex(COLUMN_EDIT_SCHEDULE));
+                    boolean editSchedule = false;
+
+                    if (editContentInteger == 1)
+                        editContent = true;
+                    if (editScheduleInteger == 1)
+                        editSchedule = true;
+
+                    user = new UserStudent(fName, lName, id, password, groups, editContent, editSchedule);
+                }
+                else {
+                    user = new UserShinshin(fName,lName,id,password,groups);
+                }
+                return user;
+            }
+        }
+
+        return null;
+    }
+
 }
