@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.service.chooser.ChooserTargetService;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,12 +34,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
     Button loginButton;
     UserHelper userHelper;
     SharedPreferences userSp;
-
+    Context context;
     public static final int INVISIBLE_INPUT = InputType.TYPE_CLASS_TEXT+InputType.TYPE_TEXT_VARIATION_PASSWORD;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_fragment);
+
+        context = this;
 
         loginId = findViewById(R.id.login_id);
         loginPassword = findViewById(R.id.login_password);
@@ -46,7 +49,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
         loginButton.setOnClickListener(this);
         showPassword = findViewById(R.id.showPassword);
         showPassword.setOnClickListener(this);
-        userHelper = new UserHelper(this);
+
+        userHelper = new UserHelper(context);
     }
 
     @Override

@@ -8,7 +8,10 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.app.Dialog;
 import android.content.Context;
 
 import android.content.Intent;
@@ -24,6 +27,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -54,7 +58,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        UserHelper userHelper = new UserHelper(this);
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -71,11 +75,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView = findViewById(R.id.navView);
         navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(this);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-            navigationView.setCheckedItem(R.id.homePage);
-            toolbarTitle.setText("");
-        }
+
         View headerView = navigationView.getHeaderView(0);
         headerUserName = headerView.findViewById(R.id.nameInNav);
         headerGroup = headerView.findViewById(R.id.groupInNav);
@@ -86,6 +86,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         if(!userPreferences.contains("init")){
             Intent loginIntent = new Intent(this,Login.class);
             startActivity(loginIntent);
+        }
+        else{
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).addToBackStack(null).commit();
         }
         headerUserName.setText(userPreferences.getString("userName","אורח"));
         if(!userPreferences.getBoolean("userEducator",false)) {
@@ -106,6 +109,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START))
             drawerLayout.closeDrawer(GravityCompat.START);
+        else if(getSupportFragmentManager().getBackStackEntryCount() <=1){
+            exitApp();
+        }
         else
             super.onBackPressed();
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
@@ -128,6 +134,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        FragmentManager fm = getSupportFragmentManager();
+        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStack();
+        }
         switch (menuItem.getItemId()) {
             case R.id.adminPage:
                 if(currentFragment instanceof AdminPageFragment){
@@ -172,7 +182,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 toolbarTitle.setText(getResources().getText(R.string.content_page));
                 break;
         }
-
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -221,4 +230,26 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 userPreferences.edit().putBoolean("permissionGranted",false);
         }
     }
+
+    public void exitApp(){
+        Dialog dialogExitApp = new Dialog(this);
+        dialogExitApp.setContentView(R.layout.dialog_exit_app);
+        dialogExitApp.show();
+        Button exit = dialogExitApp.findViewById(R.id.exit_app);
+        Button cancelExit = dialogExitApp.findViewById(R.id.cancel_exit);
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogExitApp.dismiss();
+                finish();
+            }
+        });
+        cancelExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogExitApp.dismiss();
+            }
+        });
+    }
+
 }

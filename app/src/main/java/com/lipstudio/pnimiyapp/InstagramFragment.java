@@ -1,6 +1,7 @@
 package com.lipstudio.pnimiyapp;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.Image;
@@ -14,6 +15,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -30,6 +33,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.security.Permission;
 import java.util.ArrayList;
 
@@ -41,6 +46,8 @@ public class InstagramFragment extends Fragment {
     ArrayList<Post> posts;
     PostAdapter postAdapter;
     SharedPreferences userPref;
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +58,7 @@ public class InstagramFragment extends Fragment {
         instagramHelper.open();
         posts = instagramHelper.getAllPosts();
         instagramHelper.close();
+
     }
 
     @Nullable
@@ -62,8 +70,10 @@ public class InstagramFragment extends Fragment {
         postsListView.setAdapter(postAdapter);
         postAdapter.notifyDataSetChanged();
         setHasOptionsMenu(true);
+
         return parent;
     }
+
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {

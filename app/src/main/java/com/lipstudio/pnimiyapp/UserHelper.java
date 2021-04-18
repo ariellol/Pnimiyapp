@@ -17,9 +17,10 @@ import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.ATTENDANCE_TABLE;
 import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.COLUMN_USER_ID;
 import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.CREATE_ATTENDANCE_TABLE;
 import static com.lipstudio.pnimiyapp.AttendanceSheetHelper.CREATE_SHEET_TABLE;
+import static com.lipstudio.pnimiyapp.GeneralHelper.CREATE_GENERAL_TABLE;
+import static com.lipstudio.pnimiyapp.GeneralHelper.GENERAL_TABLE;
 import static com.lipstudio.pnimiyapp.InstagramHelper.CREATE_INSTAGRAM_TABLE;
 import static com.lipstudio.pnimiyapp.InstagramHelper.INSTAGRAM_TABLE;
-import static com.lipstudio.pnimiyapp.InstagramHelper.USER_ID;
 import static com.lipstudio.pnimiyapp.ScheduleHelper.CREATE_EVENT_DAY_TABLE;
 import static com.lipstudio.pnimiyapp.ScheduleHelper.CREATE_EVENT_TABLE;
 import static com.lipstudio.pnimiyapp.ScheduleHelper.EVENT_DAY_TABLE;
@@ -28,7 +29,7 @@ public class UserHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "users.db";
     public static final String USER_TABLE = "usersTable";
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 1;
 
     public static final String COLUMN_ID = "userId";
     public static final String COLUMN_FNAME = "firstName";
@@ -51,15 +52,18 @@ public class UserHelper extends SQLiteOpenHelper {
 
 
     SQLiteDatabase database;
+    Context context;
 
     public UserHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
         Log.e("database", "UsersHelper Created.");
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.e("database", " onCreate called.");
         db.execSQL(CREATE_TABLE);
         db.execSQL(CREATE_TABLE_USER_TO_GROUP);
         db.execSQL(CREATE_SHEET_TABLE);
@@ -67,6 +71,8 @@ public class UserHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_EVENT_TABLE);
         db.execSQL(CREATE_EVENT_DAY_TABLE);
         db.execSQL(CREATE_INSTAGRAM_TABLE);
+        db.execSQL(CREATE_GENERAL_TABLE);
+
         Log.e("database", " all tables has been Created.");
     }
 
@@ -77,12 +83,13 @@ public class UserHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String drop_query = "DROP TABLE IF EXISTS ";
-        db.execSQL(drop_query + USER_TABLE);
-        db.execSQL(drop_query + USER_TO_GROUP_TABLE);
-        db.execSQL(drop_query + EVENT_DAY_TABLE);
-        db.execSQL(drop_query + INSTAGRAM_TABLE);
-        onCreate(db);
+            String drop_query = "DROP TABLE IF EXISTS ";
+            db.execSQL(drop_query + USER_TABLE);
+            db.execSQL(drop_query + USER_TO_GROUP_TABLE);
+            db.execSQL(drop_query + EVENT_DAY_TABLE);
+            db.execSQL(drop_query + INSTAGRAM_TABLE);
+            db.execSQL(drop_query + GENERAL_TABLE);
+            onCreate(db);
     }
 
     public void insertUser(User user) {
@@ -240,12 +247,16 @@ public class UserHelper extends SQLiteOpenHelper {
         try {
             cursor = database.rawQuery(selectUserQuery, null);
         } catch (NullPointerException npe) {
+            Log.e("userNotFound","exception");
+
             return null;
         }
         if (cursor.getCount() <= 0) {
-            return null;
+            Log.e("userNotFound","exception");
+                return null;
         }
         if (cursor.moveToNext()) {
+            Log.e("user ",cursor.getString(cursor.getColumnIndex(COLUMN_FNAME)) +  " " + cursor.getString(cursor.getColumnIndex(COLUMN_LNAME)) + " " + cursor.getLong(cursor.getColumnIndex(COLUMN_ID)) + " " + cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD)));
             if (cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD)).equals(password)) {
                 String fName = cursor.getString(cursor.getColumnIndex(COLUMN_FNAME));
                 String lName = cursor.getString(cursor.getColumnIndex(COLUMN_LNAME));
@@ -277,6 +288,13 @@ public class UserHelper extends SQLiteOpenHelper {
         }
 
         return null;
+    }
+
+    public void insertMyUser(){
+        ArrayList<String> groups = new ArrayList<>();
+        groups.add("שכבה ז'");
+        UserEducator userEducator = new UserEducator("אריאל", "ליפנהולץ", 123456789,"אריאלהמדריך123",groups);
+        insertUser(userEducator);
     }
 
 }

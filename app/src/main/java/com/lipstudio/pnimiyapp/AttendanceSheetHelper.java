@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -47,16 +46,10 @@ public class AttendanceSheetHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_SHEET_TABLE);
-        db.execSQL(CREATE_ATTENDANCE_TABLE);
-        Log.e("AttendanceSheetDb", "both Tables Created");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + ATTENDANCE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + SHEET_TABLE);
-        onCreate(db);
     }
 
     public void open(){

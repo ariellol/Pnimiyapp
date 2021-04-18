@@ -7,7 +7,6 @@
     <string name="idea_box">תיבת הצעות ורעיונות</string>
     <string name="requests_page">בקשות יציאה והלוואה</string>
     <string name="report_bug">דיווח על באגים ותקלות</string>
-    <string name="settings">הגדרות</string>
     <string name="admin_page">דף הצוות</string>
 
     <string-array name="userTypes">

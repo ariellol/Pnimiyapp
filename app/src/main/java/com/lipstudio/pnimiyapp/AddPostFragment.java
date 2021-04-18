@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Telephony;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,7 +38,9 @@ public class AddPostFragment extends Fragment implements View.OnFocusChangeListe
     ImageView preview;
     Uri imageUri = null;
     SharedPreferences userPref;
-
+    boolean isEditMode = false;
+    Post oldPost;
+    long oldPostId;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,6 +55,17 @@ public class AddPostFragment extends Fragment implements View.OnFocusChangeListe
         preview = parent.findViewById(R.id.imagePreview);
 
         userPref = getActivity().getSharedPreferences("userSharedPreferences",Context.MODE_PRIVATE);
+
+        if (getArguments() != null) {
+            isEditMode = true;
+            Post oldPost = (Post) getArguments().getSerializable("postToEdit");
+            oldPostId = oldPost.getPostId();
+            descriptionEt.setText(oldPost.getDescription());
+            linkEt.setText(oldPost.getUrlLink());
+            imageUri = Uri.parse(oldPost.getImageLink());
+            preview.setImageURI(imageUri);
+            preview.setVisibility(View.VISIBLE);
+        }
         return parent;
     }
 
@@ -64,16 +80,26 @@ public class AddPostFragment extends Fragment implements View.OnFocusChangeListe
 
     @Override
     public void onClick(View v) {
+        InstagramHelper instagramHelper = new InstagramHelper(getActivity());
+
         if(v.getId() == R.id.publishPostBtn){
+            Post newPost;
             if(imageUri != null) {
-
-                Post post = new Post(descriptionEt.getText().toString(),imageUri.toString(),linkEt.getText().toString()
-                        ,userPref.getLong("userId",0));
-
-                InstagramHelper instagramHelper = new InstagramHelper(getActivity());
-                instagramHelper.open();
-                post.setPostId(instagramHelper.insertNewPost(post));
-                instagramHelper.close();
+                if(isEditMode){
+                   newPost = new Post(descriptionEt.getText().toString(), imageUri.toString(), linkEt.getText().toString(),
+                            oldPostId, userPref.getLong("userId", 0));
+                    Log.e("isEditing","true");
+                    instagramHelper.open();
+                    instagramHelper.updatePost(newPost);
+                    instagramHelper.close();
+                }
+                else {
+                    newPost = new Post(descriptionEt.getText().toString(), imageUri.toString(), linkEt.getText().toString()
+                            , userPref.getLong("userId", 0));
+                    instagramHelper.open();
+                    newPost.setPostId(instagramHelper.insertNewPost(newPost));
+                    instagramHelper.close();
+                }
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new InstagramFragment())
                         .addToBackStack(null).commit();
             }

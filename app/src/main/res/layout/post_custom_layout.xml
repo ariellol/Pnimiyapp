@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="10dp"
+    app:cardCornerRadius="30dp"
+    android:layout_marginBottom="15dp"
+    app:cardPreventCornerOverlap="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layoutDirection="rtl"
     android:textDirection="rtl"
-    android:layout_marginBottom="15dp"
     android:layout_height="wrap_content">
 
     <RelativeLayout
@@ -21,10 +28,9 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:src="@drawable/ic_baseline_more_vert_24"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:id="@+id/optionsInPost"
+            android:id="@+id/imageOptions"
             android:layout_alignParentLeft="true"/>
     </RelativeLayout>
     <TextView
@@ -43,10 +49,12 @@
         android:id="@+id/linkInPost"/>
 
     <ImageView
-        android:layout_width="match_parent"
-        android:background="@color/lightGrey"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/image_instagram_background"
         android:id="@+id/imageInPost"
         android:layout_height="250dp"/>
 
 
 </LinearLayout>
+</androidx.cardview.widget.CardView>

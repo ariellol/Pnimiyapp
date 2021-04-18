@@ -5,7 +5,7 @@
     <group android:checkableBehavior="single">
 
         <item android:id="@+id/watchMode"
-            android:icon="@drawable/eye_not_selected"
+            android:icon="@drawable/ic_remove_red_eye_black_24dp"
             app:showAsAction="ifRoom"
             android:title="צפייה"/>
 

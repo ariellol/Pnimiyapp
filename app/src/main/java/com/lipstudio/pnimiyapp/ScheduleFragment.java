@@ -143,6 +143,9 @@ public class ScheduleFragment extends Fragment {
         if (dayEvents.size() > 0) {
             noLuz.setVisibility(View.GONE);
         }
+        else{
+            noLuz.setVisibility(View.VISIBLE);
+        }
 
         openEventDialog.setOnClickListener(v -> {
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
@@ -455,7 +458,7 @@ public class ScheduleFragment extends Fragment {
         if (userPref.getBoolean("editSchedule",false)){
             inflater.inflate(R.menu.edit_watch_mode_menu, menu);
             this.menu = menu;
-            menu.getItem(1).setIcon(R.drawable.edit_active);
+            menu.getItem(1).setIcon(R.drawable.ic_mode_edit_black_24dp);
             dayEventListView.setItemsCanFocus(false);
         }
 
@@ -464,16 +467,16 @@ public class ScheduleFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.editMode) {
-            item.setIcon(R.drawable.ic_mode_edit_black_24dp);
-            menu.getItem(0).setIcon(R.drawable.ic_remove_red_eye_black_24dp);
+            item.setIcon(R.drawable.edit_active);
+            menu.getItem(0).setIcon(R.drawable.eye_not_selected);
             editModeBool = true;
             noLuz.setVisibility(View.GONE);
             openEventDialog.setVisibility(View.VISIBLE);
             dayEventListView.setItemsCanFocus(true);
         } else {
             dayEventListView.setItemsCanFocus(false);
-            item.setIcon(R.drawable.eye_not_selected);
-            menu.getItem(1).setIcon(R.drawable.edit_active);
+            item.setIcon(R.drawable.ic_remove_red_eye_black_24dp);
+            menu.getItem(1).setIcon(R.drawable.ic_mode_edit_black_24dp);
             if (dayEvents.size() == 0)
                 noLuz.setVisibility(View.VISIBLE);
             else
@@ -530,7 +533,7 @@ public class ScheduleFragment extends Fragment {
 
     }
 
-    public View getViewByPosition(int pos, ListView listView) {
+    public static View getViewByPosition(int pos, ListView listView) {
         final int firstListItemPosition = listView.getFirstVisiblePosition();
         final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
 

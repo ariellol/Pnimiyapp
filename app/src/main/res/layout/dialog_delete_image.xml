@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="rtl"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:gravity="center"
+        android:background="@color/lightGrey"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="האם ברצונך למחוק פוסט זה?"
+            android:layout_marginBottom="50dp"
+            android:textSize="20sp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="150dp"
+                android:text="ביטול"
+                android:textColor="@color/white"
+                android:layout_height="50dp"
+                android:id="@+id/cancelDeletePostInDialog"
+                android:background="@drawable/button_red"/>
+
+            <Button
+                android:layout_width="150dp"
+                android:background="@drawable/button_orange_background"
+                android:text="מחיקת פוסט"
+                android:id="@+id/deletePostInDialog"
+                android:layout_marginRight="15dp"
+                android:textColor="@color/white"
+                android:layout_height="50dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

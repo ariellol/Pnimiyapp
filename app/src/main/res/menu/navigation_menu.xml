@@ -51,13 +51,7 @@
                     android:iconTint="@color/red"
                     android:title="@string/report_bug"
                     app:showAsAction="never" />
-                <item
-                    android:id="@+id/settings"
-                    android:icon="@drawable/ic_settings_black_24dp"
-                    android:iconTintMode="@color/grey"
-                    android:iconTint="@color/grey"
-                    android:title="@string/settings"
-                    app:showAsAction="never" />
+
                 <item
                     android:id="@+id/adminPage"
                     android:icon="@drawable/ic_person_black_24dp"

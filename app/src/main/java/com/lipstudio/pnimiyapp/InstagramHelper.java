@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import static com.lipstudio.pnimiyapp.UserHelper.*;
 
@@ -28,7 +29,9 @@ public class InstagramHelper extends SQLiteOpenHelper {
 
     public static final String CREATE_INSTAGRAM_TABLE = "CREATE TABLE IF NOT EXISTS " + INSTAGRAM_TABLE +
             " (" + POST_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + POST_DESCRIPTION + " VARCHAR, " + IMAGE_LINK + " VARCHAR, " + URL_LINK + ", "
-            + USER_ID + " INTEGER, " + INSTAGRAM_TABLE + " REAL);";
+            + USER_ID + " INTEGER, "+ INSTAGRAM_TABLE + " REAL);";
+
+
 
     SQLiteDatabase database;
 
@@ -55,6 +58,7 @@ public class InstagramHelper extends SQLiteOpenHelper {
         postValues.put(IMAGE_LINK,post.getImageLink());
         postValues.put(URL_LINK,post.getUrlLink());
         postValues.put(USER_ID,post.getUserId());
+
         return database.insert(INSTAGRAM_TABLE,null,postValues);
     }
 
@@ -74,5 +78,18 @@ public class InstagramHelper extends SQLiteOpenHelper {
             }
         }
         return posts;
+    }
+
+    public void deletePost(long postId){
+        database.delete(INSTAGRAM_TABLE,POST_ID + " = ?",new String[]{String.valueOf(postId)});
+    }
+
+    public void updatePost(Post post){
+        ContentValues postNewValues = new ContentValues();
+        postNewValues.put(POST_DESCRIPTION,post.getDescription());
+        postNewValues.put(IMAGE_LINK,post.getImageLink());
+        postNewValues.put(URL_LINK,post.getUrlLink());
+
+        database.update(INSTAGRAM_TABLE,postNewValues,POST_ID + " = ?", new String[]{String.valueOf(post.getPostId())});
     }
 }

@@ -1,19 +1,14 @@
 package com.lipstudio.pnimiyapp;
 
-public class Post {
+import java.io.Serializable;
+
+public class Post implements Serializable {
 
     private String description;
     private String imageLink;
     private long postId;
     private long userId;
     private String urlLink;
-
-    public Post(String description, String imageLink, long postId, long userId){
-        this.description = description;
-        this.imageLink = imageLink;
-        this.postId = postId;
-        this.userId = userId;
-    }
 
 
     public Post(String description, String imageLink,String urlLink, long userId){
@@ -70,6 +65,5 @@ public class Post {
     public void setUrlLink(String urlLink) {
         this.urlLink = urlLink;
     }
-
 
 }

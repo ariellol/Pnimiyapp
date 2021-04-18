@@ -1,8 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:layoutDirection="rtl"
+    android:orientation="vertical"
     tools:context=".HomeFragment">
 
-</FrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/greetings"
+        android:padding="20dp"
+        android:textSize="16sp"
+        android:text="ברוכים השבים \n "/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/greetings"
+        android:orientation="horizontal"
+        android:id="@+id/announcementLayout"
+        android:background="@color/lightGrey">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleY="-1"
+            android:layout_marginHorizontal="5dp"
+            app:tint="@color/grey"
+            android:layout_gravity="center_vertical"
+            android:rotation="140"
+            android:src="@drawable/megaphone"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/announcementTextView"
+            android:textSize="16sp"
+            android:layout_marginRight="15dp"
+            android:text="aaaaaa"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/announcementLayout"
+        android:id="@+id/dailyScheduleLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primaryColorGreen"
+            android:layout_gravity="center"
+            android:text="@string/day_schedule"
+            android:textSize="28sp"/>
+
+        <ImageView
+            android:src="@drawable/ic_add_black_24dp"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/open_day_event_dialog"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/primaryColorGreen"
+            android:background="@drawable/blue_circle_btn"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/scheduleContainer"
+            android:orientation="vertical"
+            android:minHeight="100dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/noLuz"
+                android:text="אין לוז להיום כרגע..."/>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:id="@+id/dayEventListView"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="60dp"
+        android:layout_below="@id/dailyScheduleLayout"
+        android:background="@color/lightGrey"
+        android:id="@+id/quoteLayout">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:rotation="180"
+            android:src="@drawable/ic_baseline_format_quote_24"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:id="@+id/quoteTextView"
+            android:layout_centerInParent="true"
+            android:maxLength="100"/>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_baseline_format_quote_24"/>
+    </RelativeLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightGrey"
+        app:menu="@menu/schedule_bottom_menu"
+        android:id="@+id/scheduleBottomNav"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>
