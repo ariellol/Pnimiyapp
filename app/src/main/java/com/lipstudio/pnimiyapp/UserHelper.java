@@ -2,7 +2,6 @@ package com.lipstudio.pnimiyapp;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -21,6 +20,12 @@ import static com.lipstudio.pnimiyapp.GeneralHelper.CREATE_GENERAL_TABLE;
 import static com.lipstudio.pnimiyapp.GeneralHelper.GENERAL_TABLE;
 import static com.lipstudio.pnimiyapp.InstagramHelper.CREATE_INSTAGRAM_TABLE;
 import static com.lipstudio.pnimiyapp.InstagramHelper.INSTAGRAM_TABLE;
+import static com.lipstudio.pnimiyapp.RequestHelper.CREATE_IDEA_TABLE;
+import static com.lipstudio.pnimiyapp.RequestHelper.CREATE_LOAN_REQUEST_TABLE;
+import static com.lipstudio.pnimiyapp.RequestHelper.CREATE_OUT_REQUEST_TABLE;
+import static com.lipstudio.pnimiyapp.RequestHelper.IDEA_BOX_TABLE;
+import static com.lipstudio.pnimiyapp.RequestHelper.LOAN_REQUEST_TABLE;
+import static com.lipstudio.pnimiyapp.RequestHelper.OUT_REQUEST_TABLE;
 import static com.lipstudio.pnimiyapp.ScheduleHelper.CREATE_EVENT_DAY_TABLE;
 import static com.lipstudio.pnimiyapp.ScheduleHelper.CREATE_EVENT_TABLE;
 import static com.lipstudio.pnimiyapp.ScheduleHelper.EVENT_DAY_TABLE;
@@ -38,6 +43,7 @@ public class UserHelper extends SQLiteOpenHelper {
     public static final String COLUMN_TYPE = "userType";
     public static final String COLUMN_EDIT_CONTENT = "editContent";
     public static final String COLUMN_EDIT_SCHEDULE = "editSchedule";
+    public static final String COLUMN_PHONE_NUMBER = "phoneNumber";
 
     public static final String GROUP_ID = "groupId";
     public static final String USER_TO_GROUP_TABLE = "userToGroup";
@@ -48,7 +54,8 @@ public class UserHelper extends SQLiteOpenHelper {
     public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + USER_TABLE +
             " (" + COLUMN_ID + " INTEGER PRIMARY KEY, " + COLUMN_FNAME + " VARCHAR, " +
             COLUMN_LNAME + " VARCHAR, " + COLUMN_PASSWORD + " VARCHAR, " + COLUMN_TYPE + " VARCHAR, "
-            + COLUMN_EDIT_CONTENT + " INTEGER, " + COLUMN_EDIT_SCHEDULE + " INTEGER, " + USER_TABLE + " REAL)";
+            + COLUMN_EDIT_CONTENT + " INTEGER, " + COLUMN_EDIT_SCHEDULE + " INTEGER, " + COLUMN_PHONE_NUMBER + " VARCHAR, "
+            + USER_TABLE + " REAL)";
 
 
     SQLiteDatabase database;
@@ -72,6 +79,9 @@ public class UserHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_EVENT_DAY_TABLE);
         db.execSQL(CREATE_INSTAGRAM_TABLE);
         db.execSQL(CREATE_GENERAL_TABLE);
+        db.execSQL(CREATE_IDEA_TABLE);
+        db.execSQL(CREATE_OUT_REQUEST_TABLE);
+        db.execSQL(CREATE_LOAN_REQUEST_TABLE);
 
         Log.e("database", " all tables has been Created.");
     }
@@ -89,6 +99,9 @@ public class UserHelper extends SQLiteOpenHelper {
             db.execSQL(drop_query + EVENT_DAY_TABLE);
             db.execSQL(drop_query + INSTAGRAM_TABLE);
             db.execSQL(drop_query + GENERAL_TABLE);
+            db.execSQL(drop_query + IDEA_BOX_TABLE);
+            db.execSQL(drop_query + OUT_REQUEST_TABLE);
+            db.execSQL(drop_query + LOAN_REQUEST_TABLE);
             onCreate(db);
     }
 
@@ -114,6 +127,7 @@ public class UserHelper extends SQLiteOpenHelper {
         values.put(COLUMN_TYPE, type);
         values.put(COLUMN_EDIT_CONTENT, editContent);
         values.put(COLUMN_EDIT_SCHEDULE, editSchedule);
+        values.put(COLUMN_PHONE_NUMBER,user.getPhoneNumber());
 
         database.insert(USER_TABLE, null, values);
         insertUserToGroup(user);
@@ -135,6 +149,37 @@ public class UserHelper extends SQLiteOpenHelper {
         return "";
     }
 
+    public User getUserById(long id){
+        Cursor cursor = database.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_ID + " = " + id,null);
+        User user;
+        if (cursor.getCount()>0){
+            cursor.moveToNext();
+            String fname = cursor.getString(cursor.getColumnIndex(COLUMN_FNAME));
+            String lname = cursor.getString(cursor.getColumnIndex(COLUMN_LNAME));
+            String password = cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD));
+            String type = cursor.getString(cursor.getColumnIndex(COLUMN_TYPE));
+            String phoneNumber = cursor.getString(cursor.getColumnIndex(COLUMN_PHONE_NUMBER));
+            boolean editContent = false;
+            if (cursor.getInt(cursor.getColumnIndex(COLUMN_EDIT_CONTENT)) == 1)
+                editContent = true;
+
+            boolean editSchedule = false;
+            if (cursor.getInt(cursor.getColumnIndex(COLUMN_EDIT_SCHEDULE)) == 1)
+                editSchedule = true;
+
+            if (type.equals("student"))
+                user = new UserStudent(fname, lname, id, password, getUserGroup(id), editContent, editSchedule,phoneNumber);
+            else if (type.equals("educator"))
+                user = new UserEducator(fname, lname, id, password, getUserGroup(id),phoneNumber);
+            else
+                user = new UserShinshin(fname, lname, id, password, getUserGroup(id),phoneNumber);
+
+            return user;
+
+        }
+        return null;
+    }
+
     public ArrayList<User> getAllUsers() {
         ArrayList<User> users = new ArrayList<>();
         String sql_str = "SELECT * FROM " + USER_TABLE;
@@ -147,6 +192,7 @@ public class UserHelper extends SQLiteOpenHelper {
                 String lname = cursor.getString(cursor.getColumnIndex(COLUMN_LNAME));
                 String password = cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD));
                 String type = cursor.getString(cursor.getColumnIndex(COLUMN_TYPE));
+                String phoneNumber = cursor.getString(cursor.getColumnIndex(COLUMN_PHONE_NUMBER));
                 boolean editContent = false;
                 if (cursor.getInt(cursor.getColumnIndex(COLUMN_EDIT_CONTENT)) == 1)
                     editContent = true;
@@ -156,11 +202,11 @@ public class UserHelper extends SQLiteOpenHelper {
                     editSchedule = true;
 
                 if (type.equals("student"))
-                    users.add(new UserStudent(fname, lname, id, password, getUserGroup(id), editContent, editSchedule));
+                    users.add(new UserStudent(fname, lname, id, password, getUserGroup(id), editContent, editSchedule,phoneNumber));
                 else if (type.equals("educator"))
-                    users.add(new UserEducator(fname, lname, id, password, getUserGroup(id)));
+                    users.add(new UserEducator(fname, lname, id, password, getUserGroup(id),phoneNumber));
                 else
-                    users.add(new UserShinshin(fname, lname, id, password, getUserGroup(id)));
+                    users.add(new UserShinshin(fname, lname, id, password, getUserGroup(id),phoneNumber));
             }
         }
         return users;
@@ -218,14 +264,20 @@ public class UserHelper extends SQLiteOpenHelper {
         values.put(COLUMN_LNAME, user.getLastName());
         values.put(COLUMN_PASSWORD, user.getPassword());
         values.put(COLUMN_TYPE, type);
-        if (((UserStudent) user).isEditSchedule())
-            values.put(COLUMN_EDIT_SCHEDULE, 1);
+        values.put(COLUMN_PHONE_NUMBER,user.getPhoneNumber());
+        if (user instanceof UserStudent) {
+            if (((UserStudent) user).isEditSchedule())
+                values.put(COLUMN_EDIT_SCHEDULE, 1);
+            else
+                values.put(COLUMN_EDIT_SCHEDULE, 0);
+            if (((UserStudent) user).isEditContent())
+                values.put(COLUMN_EDIT_CONTENT, 1);
+            else
+                values.put(COLUMN_EDIT_CONTENT, 0);
+        }
         else
-            values.put(COLUMN_EDIT_SCHEDULE, 0);
-        if (((UserStudent) user).isEditContent())
-            values.put(COLUMN_EDIT_CONTENT, 1);
-        else
-            values.put(COLUMN_EDIT_CONTENT, 0);
+            values.put(COLUMN_EDIT_SCHEDULE,1);
+            values.put(COLUMN_EDIT_CONTENT,1);
 
         database.update(USER_TABLE, values, COLUMN_ID + " = ?", new String[]{String.valueOf(user.getId())});
 
@@ -260,12 +312,13 @@ public class UserHelper extends SQLiteOpenHelper {
             if (cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD)).equals(password)) {
                 String fName = cursor.getString(cursor.getColumnIndex(COLUMN_FNAME));
                 String lName = cursor.getString(cursor.getColumnIndex(COLUMN_LNAME));
+                String phoneNumber = cursor.getString(cursor.getColumnIndex(COLUMN_PHONE_NUMBER));
                 User user;
                 String type = cursor.getString(cursor.getColumnIndex(COLUMN_TYPE));
                 ArrayList<String> groups = getUserGroup(id);
 
                 if (type.equals("educator")) {
-                    user = new UserEducator(fName, lName, id, password, groups);
+                    user = new UserEducator(fName, lName, id, password, groups,phoneNumber);
                 }
                 else if(type.equals("student")){
                     int editContentInteger = cursor.getInt(cursor.getColumnIndex(COLUMN_EDIT_CONTENT));
@@ -278,10 +331,10 @@ public class UserHelper extends SQLiteOpenHelper {
                     if (editScheduleInteger == 1)
                         editSchedule = true;
 
-                    user = new UserStudent(fName, lName, id, password, groups, editContent, editSchedule);
+                    user = new UserStudent(fName, lName, id, password, groups, editContent, editSchedule,phoneNumber);
                 }
                 else {
-                    user = new UserShinshin(fName,lName,id,password,groups);
+                    user = new UserShinshin(fName,lName,id,password,groups,phoneNumber);
                 }
                 return user;
             }
@@ -290,10 +343,21 @@ public class UserHelper extends SQLiteOpenHelper {
         return null;
     }
 
+    public String getUserPhoneById(long id){
+        Cursor cursor = database.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_ID + " = " + id,null);
+
+        if (cursor.getCount()>0){
+            cursor.moveToNext();
+            String phoneNumber = cursor.getString(cursor.getColumnIndex(COLUMN_PHONE_NUMBER));
+            return phoneNumber;
+        }
+        return "";
+    }
+
     public void insertMyUser(){
         ArrayList<String> groups = new ArrayList<>();
         groups.add("שכבה ז'");
-        UserEducator userEducator = new UserEducator("אריאל", "ליפנהולץ", 123456789,"אריאלהמדריך123",groups);
+        UserEducator userEducator = new UserEducator("אריאל", "ליפנהולץ", 123456789,"אריאלהמדריך123",groups,"0507900567");
         insertUser(userEducator);
     }
 

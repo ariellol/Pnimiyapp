@@ -10,14 +10,15 @@ public class User implements Serializable {
     private long id;
     private String password;
     private ArrayList<String> group;
+    private String phoneNumber;
 
-    public User(String firstName, String lastName, long id, String password, ArrayList<String> group) {
+    public User(String firstName, String lastName, long id, String password, ArrayList<String> group, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;
         this.password = password;
         this.group = group;
-
+        this.phoneNumber = phoneNumber;
     }
 
 
@@ -61,6 +62,14 @@ public class User implements Serializable {
         this.group = group;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -68,6 +77,8 @@ public class User implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", id=" + id +
                 ", password='" + password + '\'' +
+                ", group=" + group +
+                ", phoneNumber=" + phoneNumber +
                 '}';
     }
 }

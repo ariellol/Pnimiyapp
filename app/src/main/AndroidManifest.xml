@@ -2,11 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lipstudio.pnimiyapp">
 
-    <uses-feature android:name="android.hardware.camera"
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="false" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
     <application
         android:allowBackup="false"
         android:icon="@drawable/black"
@@ -14,15 +17,18 @@
         android:roundIcon="@drawable/black"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Launcher">
-        <activity android:name=".Home" android:screenOrientation="portrait">
+        <activity android:name=".RestorePasswordActivity"></activity>
+        <activity
+            android:name=".Home"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Login">
-        </activity>
+        <activity android:name=".Login"></activity>
+        <activity android:name=".SendCodeRestorePasswordActivity"></activity>
     </application>
 
 </manifest>

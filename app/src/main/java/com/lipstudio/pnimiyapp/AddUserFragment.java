@@ -1,12 +1,18 @@
 package com.lipstudio.pnimiyapp;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -19,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -33,6 +40,11 @@ public class AddUserFragment extends Fragment implements View.OnFocusChangeListe
     CheckBox[] grades;
     ArrayList<String> selectedGrades;
     Context context;
+    Button pickContact;
+
+    public static final int REQUEST_CODE = 0;
+    public static final int OK_CODE = 1;
+    public static final int NOT_OK_CODE = 2;
 
     @Nullable
     @Override
@@ -44,6 +56,8 @@ public class AddUserFragment extends Fragment implements View.OnFocusChangeListe
         id = view.findViewById(R.id.idRegister);
         password = view.findViewById(R.id.passwordRegister);
         rePassword = view.findViewById(R.id.rePasswordRegister);
+        pickContact = view.findViewById(R.id.pick_phone_number);
+        pickContact.setOnClickListener(this);
         view.findViewById(R.id.addUser).setOnClickListener(this);
         fname.setOnFocusChangeListener(this);
         lname.setOnFocusChangeListener(this);
@@ -97,7 +111,8 @@ public class AddUserFragment extends Fragment implements View.OnFocusChangeListe
     private boolean filterRegister() {
         if (fname.getText().toString().equals("") || lname.getText().toString().equals("")
                 || id.getText().toString().equals("") || password.getText().toString().equals("") ||
-                rePassword.getText().toString().equals("") || userTypeSpinner.getSelectedItem().toString().equals("סוג משתמש*")) {
+                rePassword.getText().toString().equals("") || userTypeSpinner.getSelectedItem().toString().equals("סוג משתמש*") ||
+                pickContact.getText().toString().equals("")) {
 
             Toast.makeText(context, "שדות לא תקינים, נסה שוב.", Toast.LENGTH_SHORT).show();
             return false;
@@ -129,6 +144,10 @@ public class AddUserFragment extends Fragment implements View.OnFocusChangeListe
             Toast.makeText(context, "אם סוג המשתמש הוא חניך, חובה לבחור שכבה אחת", Toast.LENGTH_SHORT).show();
             return false;
         }
+
+        if (pickContact.getText().toString().startsWith("+972")){
+            pickContact.setText(pickContact.getText().toString().replace("+972","0"));
+        }
         return true;
     }
 
@@ -142,6 +161,14 @@ public class AddUserFragment extends Fragment implements View.OnFocusChangeListe
 
     @Override
     public void onClick(View v) {
+
+
+        if (v.getId() == R.id.pick_phone_number){
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS},REQUEST_CODE);
+            Intent contactsIntent = new Intent(Intent.ACTION_PICK,ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+            startActivityForResult(contactsIntent,1);
+            return;
+        }
         if(!filterRegister())
             return;
         User user = null;
@@ -149,19 +176,20 @@ public class AddUserFragment extends Fragment implements View.OnFocusChangeListe
         String lastName = lname.getText().toString();
         String pass = password.getText().toString();
         long userId = Long.parseLong(id.getText().toString());
+        String phoneNumber = pickContact.getText().toString();
         UserHelper userHelper = new UserHelper(context);
 
         switch (userTypeSpinner.getSelectedItem().toString()){
             case "חניך":
-                user = new UserStudent(firstName,lastName,userId,pass,selectedGrades);
+                user = new UserStudent(firstName,lastName,userId,pass,selectedGrades,phoneNumber);
                 break;
 
             case "מדריך":
-                user = new UserEducator(firstName,lastName,userId,pass,selectedGrades);
+                user = new UserEducator(firstName,lastName,userId,pass,selectedGrades,phoneNumber);
                 break;
 
             case "שינשין":
-                user = new UserShinshin(firstName,lastName,userId,pass,selectedGrades);
+                user = new UserShinshin(firstName,lastName,userId,pass,selectedGrades,phoneNumber);
                 break;
         }
         userHelper.open();
@@ -173,10 +201,33 @@ public class AddUserFragment extends Fragment implements View.OnFocusChangeListe
         Log.e("userToGroup",userHelper.getAllUserToGroup());
         userHelper.close();
         Toast.makeText(context, "המשתמש נוצר בהצלחה!", Toast.LENGTH_LONG).show();
-        getActivity().findViewById(R.id.toolbar).setBackgroundResource(R.color.primaryColorGreen);
-        ((TextView)getActivity().findViewById(R.id.toolbar_title)).setText(getResources().getText(R.string.admin_page));
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AdminPageFragment())
-        .addToBackStack(null).commit();
+        getActivity().onBackPressed();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+            Log.e("allFine","yes");
+        Uri contactUri = null;
+        if (data != null) {
+            contactUri = data.getData();
+        }
+        else{
+            return;
+        }
+        Cursor cursor = context.getContentResolver().query(contactUri,null,null,null,null);
+            cursor.moveToFirst();
+            String phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            if(phoneNumber.startsWith("+972"))
+                phoneNumber = phoneNumber.replace("+972","0");
+
+            if(phoneNumber.contains("-"))
+                phoneNumber = phoneNumber.replace("-","");
+
+            if(phoneNumber.contains(" "))
+            phoneNumber = phoneNumber.replace(" ","");
+
+            pickContact.setText(phoneNumber);
+            cursor.close();
+
+    }
 }

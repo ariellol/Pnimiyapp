@@ -44,13 +44,13 @@
         app:showAsAction="never">
         <menu>
             <group android:checkableBehavior="single">
+
                 <item
-                    android:id="@+id/reportBugPage"
-                    android:icon="@drawable/ic_bug_report_black_24dp"
-                    android:iconTintMode="@color/red"
-                    android:iconTint="@color/red"
-                    android:title="@string/report_bug"
-                    app:showAsAction="never" />
+                    android:icon="@drawable/ic_baseline_contact_page_24"
+                    android:iconTint="@color/darkBlue"
+                    android:title="דף הקשר"
+                    app:showAsAction="never"
+                    android:id="@+id/contactPage"/>
 
                 <item
                     android:id="@+id/adminPage"

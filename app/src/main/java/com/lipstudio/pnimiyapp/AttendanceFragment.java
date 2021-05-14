@@ -190,10 +190,8 @@ public class AttendanceFragment extends Fragment implements View.OnClickListener
             sheetHelper.open();
             sheetHelper.insertAttendanceSheet(attendanceSheet);
             sheetHelper.close();
-            getActivity().findViewById(R.id.toolbar).setBackgroundResource(R.color.primaryColorGreen);
-            ((TextView)getActivity().findViewById(R.id.toolbar_title)).setText(getResources().getText(R.string.admin_page));
+            getActivity().onBackPressed();
             Toast.makeText(context, "טופס הנוכחות הוזן בהצלחה.", Toast.LENGTH_SHORT).show();
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AdminPageFragment()).addToBackStack(null).commit();
         }
     }
 

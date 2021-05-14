@@ -6,7 +6,7 @@
     <string name="content_page">פנימיסטגרם</string>
     <string name="idea_box">תיבת הצעות ורעיונות</string>
     <string name="requests_page">בקשות יציאה והלוואה</string>
-    <string name="report_bug">דיווח על באגים ותקלות</string>
+    <string name="phone_book">ספר הטלפונים</string>
     <string name="admin_page">דף הצוות</string>
 
     <string-array name="userTypes">

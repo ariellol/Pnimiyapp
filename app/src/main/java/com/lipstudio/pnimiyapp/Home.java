@@ -1,6 +1,7 @@
 package com.lipstudio.pnimiyapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 
@@ -19,6 +21,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.opengl.Visibility;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -41,6 +44,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.LongFunction;
 
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener , View.OnFocusChangeListener, View.OnClickListener{
@@ -53,11 +57,15 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     TextView headerGroup;
     LinearLayout logout;
     SharedPreferences userPreferences;
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.READ_CONTACTS,Manifest.permission.SEND_SMS},1);
+
         UserHelper userHelper = new UserHelper(this);
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
@@ -107,26 +115,41 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START))
+        Log.e("CountEntryinBackPressed",getSupportFragmentManager().getBackStackEntryCount()+"");
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
+            return;
+        }
         else if(getSupportFragmentManager().getBackStackEntryCount() <=1){
-            exitApp();
+            if (currentFragment instanceof HomeFragment)
+                exitApp();
+            else{
+                popPreviousFragments();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.add(R.id.fragment_container, new HomeFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+                navigationView.setCheckedItem(R.id.homePage);
+                toolbar.setBackgroundResource(R.color.primaryColorGreen);
+                toolbarTitle.setText(getResources().getText(R.string.app_name));
+                Log.e("title",getResources().getText(R.string.app_name)+"");
+                return;
+            }
+            Log.e("fragmentId",currentFragment.getId()+"");
         }
         else
             super.onBackPressed();
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (currentFragment instanceof AdminPageFragment) {
+        if(currentFragment instanceof AddUserFragment || currentFragment instanceof ListChangeUser ||
+                currentFragment instanceof AttendanceFragment || currentFragment instanceof AttendanceHistoryFragment){
+
+            toolbar.setBackgroundResource(R.color.primaryColorGreen);
             toolbarTitle.setText(getResources().getText(R.string.admin_page));
-            toolbar.setBackgroundColor(getResources().getColor(R.color.primaryColorGreen));
         }
-        else if(currentFragment instanceof HomeFragment){
-            toolbar.setBackgroundColor(getResources().getColor(R.color.primaryColorGreen));
-        }
-        else if(currentFragment instanceof InstagramFragment){
+        else if(currentFragment instanceof AddPostFragment){
             toolbarTitle.setText(getResources().getText(R.string.content_page));
             toolbar.setBackgroundResource(R.color.orange);
         }
-
 
     }
 
@@ -134,52 +157,87 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        FragmentManager fm = getSupportFragmentManager();
-        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
-            fm.popBackStack();
-        }
+
         switch (menuItem.getItemId()) {
             case R.id.adminPage:
                 if(currentFragment instanceof AdminPageFragment){
                     break;
                 }
-                transaction.replace(R.id.fragment_container, new AdminPageFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
                 toolbar.setBackgroundResource(R.color.primaryColorGreen);
                 toolbarTitle.setText(getResources().getText(R.string.admin_page));
+                popPreviousFragments();
+                transaction.add(R.id.fragment_container, new AdminPageFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+                Log.e("entryCount",getSupportFragmentManager().getBackStackEntryCount()+"");
                 break;
 
             case R.id.homePage:
                 if(currentFragment instanceof HomeFragment){
                     break;
                 }
-                transaction.replace(R.id.fragment_container, new HomeFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
                 toolbar.setBackgroundResource(R.color.primaryColorGreen);
                 toolbarTitle.setText(getResources().getText(R.string.app_name));
+                popPreviousFragments();
+                transaction.add(R.id.fragment_container, new HomeFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
                 break;
 
             case R.id.schedulePage:
                 if(currentFragment instanceof ScheduleFragment){
                     break;
                 }
-                transaction.replace(R.id.fragment_container, new ScheduleFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
                 toolbar.setBackgroundResource(R.color.blue);
                 toolbarTitle.setText(getResources().getText(R.string.schedule_page));
+                popPreviousFragments();
+                transaction.add(R.id.fragment_container, new ScheduleFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
                 break;
             case R.id.contentPage:
                 if (currentFragment instanceof InstagramFragment){
                     break;
                 }
-                transaction.replace(R.id.fragment_container, new InstagramFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
                 toolbar.setBackgroundResource(R.color.orange);
                 toolbarTitle.setText(getResources().getText(R.string.content_page));
+                popPreviousFragments();
+                transaction.add(R.id.fragment_container, new InstagramFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+                break;
+
+            case R.id.ideaBox:
+                if (currentFragment instanceof IdeaBoxFragment)
+                    break;
+                toolbar.setBackgroundResource(R.color.turkiz);
+                toolbarTitle.setText(getResources().getText(R.string.idea_box));
+                popPreviousFragments();
+                transaction.add(R.id.fragment_container, new IdeaBoxFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+                break;
+
+            case R.id.requestsPage:
+                if (currentFragment instanceof  RequestsFragment)
+                    break;
+                toolbar.setBackgroundResource(R.color.yellow);
+                toolbarTitle.setText(getResources().getText(R.string.requests_page));
+                popPreviousFragments();
+                transaction.add(R.id.fragment_container, new RequestsFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+                break;
+
+            case R.id.contactPage:
+                if (currentFragment instanceof PhoneBookFragment)
+                    break;
+                toolbar.setBackgroundResource(R.color.darkBlue);
+                toolbarTitle.setText(getResources().getText(R.string.phone_book));
+                popPreviousFragments();
+                transaction.add(R.id.fragment_container, new PhoneBookFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -221,16 +279,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode ==1){
-            if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                userPreferences.edit().putBoolean("permissionGranted",true);
-            else
-                userPreferences.edit().putBoolean("permissionGranted",false);
-        }
-    }
-
     public void exitApp(){
         Dialog dialogExitApp = new Dialog(this);
         dialogExitApp.setContentView(R.layout.dialog_exit_app);
@@ -252,4 +300,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         });
     }
 
+    public void popPreviousFragments(){
+        FragmentManager fm = getSupportFragmentManager();
+        fm.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+    }
 }

@@ -16,4 +16,6 @@
     <color name="white">#ffffff</color>
     <color name="superLightCyan">#cae4f6</color>
     <color name="lightCyan">#75b9e7</color>
+    <color name="almostWhiteGreen">#EAFAF1</color>
+    <color name="weirdLightGreen">#C0F0D4</color>
 </resources>

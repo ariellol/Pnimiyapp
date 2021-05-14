@@ -16,53 +16,54 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:textSize="18sp"
+            android:textStyle="bold"
+            android:textFontWeight="600"
+            android:layout_marginBottom="15dp"
             android:id="@+id/changeSettingsTitle"
             android:textColor="@color/black"
             android:text="שינוי הגדרות"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:orientation="horizontal">
+
 
             <EditText
                 android:id="@+id/fnameSettnings"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="שם פרטי*"
+                android:hint="שם פרטי"
                 android:paddingRight="10dp"
-                android:layout_marginLeft="10dp"
                 android:background="@drawable/edit_text_background"
                 android:singleLine="true" />
 
             <EditText
                 android:id="@+id/lnameSettings"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="10dp"
-                android:hint="שם משפחה*"
+                android:hint="שם משפחה"
+                android:layout_marginVertical="15dp"
                 android:background="@drawable/edit_text_background"
                 android:singleLine="true" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/passwordSettings"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="סיסמה*"
-                android:layout_marginLeft="10dp"
+                android:hint="סיסמה"
                 android:paddingRight="10dp"
                 android:background="@drawable/edit_text_background"
                 android:singleLine="true" />
 
-        </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_marginVertical="15dp"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:textSize="18dp"
+            android:id="@+id/changePhoneNumber"
+            android:gravity="right|center_vertical"
+            android:background="@drawable/edit_text_background"
+            android:hint="שנה מספר טלפון"/>
+
 
         <LinearLayout
             android:layout_width="350dp"
@@ -129,6 +130,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:layout_marginTop="15dp"
+            android:textFontWeight="600"
+            android:textStyle="bold"
             android:textSize="18sp"
             android:id="@+id/changePermissionTitle"
             android:text="שינוי הרשאות"/>
@@ -155,15 +158,7 @@
                     android:text="עריכת לוחות זמנים"/>
             </LinearLayout>
 
-        <TextView
-            android:id="@+id/deleteUser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="56dp"
-            android:text="מחק משתמש"
-            android:textColor="@color/red" />
+
             <Button
             android:layout_width="300dp"
             android:layout_height="60dp"
@@ -172,6 +167,16 @@
             android:text="עדכון משתמש"
             android:id="@+id/updateUser"
             android:background="@drawable/button_cyan"
-            android:layout_marginBottom="60dp" />
+            android:layout_marginBottom="30dp" />
+
+        <TextView
+            android:id="@+id/deleteUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/button_red"
+            android:text="מחק משתמש"
+            android:textColor="@color/white" />
     </LinearLayout>
 </ScrollView>

@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:hint="שם פרטי*"
+        android:fontFamily="@font/assistant_regular"
         android:paddingRight="10dp"
         android:background="@drawable/edit_text_background"
         android:singleLine="true" />
@@ -31,6 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dp"
+        android:fontFamily="@font/assistant_regular"
         android:layout_marginVertical="15dp"
         android:hint="שם משפחה*"
         android:background="@drawable/edit_text_background"
@@ -41,6 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="תעודת זהות*"
+        android:fontFamily="@font/assistant_regular"
         android:paddingRight="10dp"
         android:inputType="number"
         android:background="@drawable/edit_text_background"
@@ -51,6 +54,7 @@
         android:id="@+id/passwordRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/assistant_regular"
         android:layout_marginVertical="15dp"
         android:hint="סיסמה*"
         android:paddingRight="10dp"
@@ -64,7 +68,20 @@
         android:hint="חזור על סיסמה*"
         android:background="@drawable/edit_text_background"
         android:singleLine="true"
+        android:fontFamily="@font/assistant_regular"
         android:paddingRight="10dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="15dp"
+            android:textSize="18dp"
+            android:paddingRight="10dp"
+            android:fontFamily="@font/assistant_regular"
+            android:hint="בחר מספר טלפון"
+            android:id="@+id/pick_phone_number"
+            android:gravity="right|center_vertical"
+            android:background="@drawable/edit_text_background"/>
 
     </LinearLayout>
 
@@ -83,6 +100,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="right"
+        android:fontFamily="@font/assistant_regular"
         android:layout_gravity="center"
         android:background="@drawable/edit_text_background"
         android:id="@+id/userTypeSpinner"/>
@@ -97,16 +115,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ז"
+            android:fontFamily="@font/assistant_regular"
             android:text="שכבה ז"/>
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/assistant_regular"
         android:id="@+id/ח"
         android:layout_marginRight="10dp"
         android:text="שכבה ח'"/>
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/assistant_regular"
         android:layout_marginRight="3dp"
         android:id="@+id/ט"
         android:text="שכבה ט'"/>
@@ -114,6 +135,7 @@
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/assistant_regular"
             android:id="@+id/י"
             android:text="שכבה י'"/>
 
@@ -122,22 +144,26 @@
     <LinearLayout
         android:paddingLeft="10dp"
         android:layout_width="wrap_content"
+        android:fontFamily="@font/assistant_regular"
         android:layout_height="wrap_content">
 
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/assistant_regular"
             android:id="@+id/יא"
             android:text="שכבה יא'"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/יב"
+            android:fontFamily="@font/assistant_regular"
             android:text="שכבה יב'"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/noGrade"
+            android:fontFamily="@font/assistant_regular"
             android:text="ללא שכבה"/>
     </LinearLayout>
     </LinearLayout>
@@ -146,6 +172,7 @@
         android:layout_height="60dp"
         android:textColor="@color/white"
         android:layout_marginTop="30dp"
+        android:fontFamily="@font/assistant_regular"
         android:text="הוספת משתמש"
         android:id="@+id/addUser"
         android:background="@drawable/button_cyan"

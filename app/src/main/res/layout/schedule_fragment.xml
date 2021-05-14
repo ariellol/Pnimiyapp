@@ -21,6 +21,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/blue"
+                    android:textStyle="bold"
+                    android:textFontWeight="800"
                     android:layout_gravity="center"
                     android:text="@string/day_schedule"
                     android:textSize="28sp"/>
@@ -64,6 +66,8 @@
                 android:layout_below="@id/dayScheduleLayout"
                 android:textColor="@color/blue"
                 android:id="@+id/year_sched"
+                android:textFontWeight="800"
+                android:textStyle="bold"
                 android:layout_marginTop="30dp"
                 android:layout_centerHorizontal="true"
                 android:textSize="28sp" />

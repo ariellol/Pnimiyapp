@@ -2,7 +2,12 @@ package com.lipstudio.pnimiyapp;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +45,7 @@ public class ChangeUserSettings extends Fragment implements View.OnFocusChangeLi
     Button deleteUser;
     Button cancel;
     UserHelper helper;
+    Button changePhoneNumber;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,7 +56,9 @@ public class ChangeUserSettings extends Fragment implements View.OnFocusChangeLi
         TextView permissionTitle = view.findViewById(R.id.changePermissionTitle);
         settingsTitle.setText("שינוי הגדרות ל" + student.getFirstName() + " " + student.getLastName());
         permissionTitle.setText("שינוי הרשאות ל" + student.getFirstName() + " " + student.getLastName());
-
+        changePhoneNumber = view.findViewById(R.id.changePhoneNumber);
+        changePhoneNumber.setText(student.getPhoneNumber());
+        changePhoneNumber.setOnClickListener(this);
         helper = new UserHelper(context);
         deleteUserDialog = new Dialog(context);
         deleteUserDialog.setContentView(R.layout.delete_user_dialog);
@@ -70,8 +78,8 @@ public class ChangeUserSettings extends Fragment implements View.OnFocusChangeLi
                         helper.open();
                         helper.deleteUser(student);
                         helper.close();
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AdminPageFragment())
-                                .addToBackStack(null).commit();
+
+                        getActivity().onBackPressed();
                         Toast.makeText(context, "המשתמש נמחק בהצלחה.", Toast.LENGTH_SHORT).show();
                         deleteUserDialog.dismiss();
                     }
@@ -146,21 +154,24 @@ public class ChangeUserSettings extends Fragment implements View.OnFocusChangeLi
     @Override
     public void onClick(View v) {
 
-        for (int i = 0; i < 6 ; i++) {
-            if(grades[i].isChecked())
-                newGroups.add(grades[i].getText().toString());
+        if (v.getId() == R.id.changePhoneNumber){
+            Intent contactsIntent = new Intent(Intent.ACTION_PICK,ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+            startActivityForResult(contactsIntent,1);
         }
-        newStudent = new UserStudent(fnameTv.getText().toString(),lnameTv.getText().toString(),student.getId(),
-                    passwordTv.getText().toString(),newGroups,editContentSw.isChecked(),editScheduleSw.isChecked());
+        else {
+            for (int i = 0; i < 6; i++) {
+                if (grades[i].isChecked())
+                    newGroups.add(grades[i].getText().toString());
+            }
+            newStudent = new UserStudent(fnameTv.getText().toString(), lnameTv.getText().toString(), student.getId(),
+                    passwordTv.getText().toString(), newGroups, editContentSw.isChecked(), editScheduleSw.isChecked(), changePhoneNumber.getText().toString());
 
-        helper.open();
-        helper.updateUser(newStudent);
-        helper.close();
-        Toast.makeText(context, "המשתמש עודכן בהצלחה!", Toast.LENGTH_SHORT).show();
-        getActivity().findViewById(R.id.toolbar).setBackgroundResource(R.color.primaryColorGreen);
-        ((TextView)getActivity().findViewById(R.id.toolbar_title)).setText(getResources().getText(R.string.admin_page));
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AdminPageFragment())
-                .addToBackStack(null).commit();
+            helper.open();
+            helper.updateUser(newStudent);
+            helper.close();
+            Toast.makeText(context, "המשתמש עודכן בהצלחה!", Toast.LENGTH_SHORT).show();
+            getActivity().onBackPressed();
+        }
     }
 
     @Override
@@ -181,5 +192,23 @@ public class ChangeUserSettings extends Fragment implements View.OnFocusChangeLi
                     grades[i].setChecked(false);
             }
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.e("allFine","yes");
+        Uri contactUri = null;
+        if (data != null) {
+            contactUri = data.getData();
+        }
+        else{
+            return;
+        }
+        Cursor cursor = context.getContentResolver().query(contactUri,null,null,null,null);
+        cursor.moveToFirst();
+        String phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+        changePhoneNumber.setText(phoneNumber);
+        cursor.close();
+
     }
 }

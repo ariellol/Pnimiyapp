@@ -8,14 +8,14 @@ public class UserStudent extends User{
     private boolean editContent;
     private boolean editSchedule;
 
-    public UserStudent(String firstName, String lastName, long id, String password, ArrayList<String> group) {
-        super(firstName, lastName, id, password, group);
+    public UserStudent(String firstName, String lastName, long id, String password, ArrayList<String> group, String phoneNumber) {
+        super(firstName, lastName, id, password, group,phoneNumber);
         editContent = false;
         editSchedule = false;
     }
 
-    public UserStudent(String firstName, String lastName, long id, String password, ArrayList<String> group,boolean editContent, boolean editSchedule ) {
-        super(firstName, lastName, id, password, group);
+    public UserStudent(String firstName, String lastName, long id, String password, ArrayList<String> group,boolean editContent, boolean editSchedule, String phoneNumber) {
+        super(firstName, lastName, id, password, group,phoneNumber);
         this.editContent = editContent;
         this.editSchedule = editSchedule;
     }

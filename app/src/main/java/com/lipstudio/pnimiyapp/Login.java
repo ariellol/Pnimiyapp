@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.service.chooser.ChooserTargetService;
 import android.text.InputType;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,7 +27,6 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.HashSet;
 import java.util.Set;
-
 public class Login extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener{
 
     EditText loginId;
@@ -34,9 +35,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
     Button loginButton;
     UserHelper userHelper;
     SharedPreferences userSp;
+    TextView forgotPassword;
     Context context;
     public static final int INVISIBLE_INPUT = InputType.TYPE_CLASS_TEXT+InputType.TYPE_TEXT_VARIATION_PASSWORD;
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_fragment);
@@ -49,13 +50,21 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
         loginButton.setOnClickListener(this);
         showPassword = findViewById(R.id.showPassword);
         showPassword.setOnClickListener(this);
-
+        forgotPassword = findViewById(R.id.forgot_password);
+        forgotPassword.setOnClickListener(this);
         userHelper = new UserHelper(context);
+
+
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.login_button){
+
+        if (v.getId() == R.id.forgot_password){
+            startActivity(new Intent(this, SendCodeRestorePasswordActivity.class));
+        }
+
+        else if (v.getId() == R.id.login_button){
             if(loginId.getText().toString().equals("") || loginPassword.getText().toString().equals("")){
                 Toast.makeText(this, "תעודת הזהות או הסיסמה אינם תקינים", Toast.LENGTH_SHORT).show();
                 return;
@@ -113,9 +122,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
     }
 
     @Override
-    public void onBackPressed() {
-        return;
-    }
+    public void onBackPressed() { }
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
